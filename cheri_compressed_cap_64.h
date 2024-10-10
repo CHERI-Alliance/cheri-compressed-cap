@@ -91,7 +91,7 @@ enum {
     _CC_FIELD(UPERMS, 31, 32),
     _CC_FIELD(RESERVED, 31, 32),
     _CC_FIELD(RESERVED2, 31, 32),
-    _CC_FIELD(SEALED, 31, 32),
+    _CC_FIELD(CT, 31, 32),
     _CC_FIELD(SDP, 31, 32),
     _CC_FIELD(AP, 31, 32),
     _CC_FIELD(EF, 31, 32),
