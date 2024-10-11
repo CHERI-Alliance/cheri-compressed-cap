@@ -1282,7 +1282,7 @@ static inline _cc_cap_t _cc_N(make_max_perms_cap_m)(_cc_addr_t base, _cc_addr_t 
     assert(_cc_N(is_representable_cap_exact)(&creg));
     creg.cr_m = m ? 1 : 0;
     creg.cr_lvbits = 0;
-    creg.cr_arch_perm = CAP_AP_C | CAP_AP_W | CAP_AP_R | CAP_AP_X | CAP_AP_ASR;
+    creg.cr_arch_perm = CAP_AP_C | CAP_AP_W | CAP_AP_R | CAP_AP_X | CAP_AP_ASR | CAP_AP_LM;
     _cc_N(m_ap_compress)(&creg);
     return creg;
 }

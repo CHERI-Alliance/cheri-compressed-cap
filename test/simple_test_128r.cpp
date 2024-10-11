@@ -50,7 +50,7 @@ TEST_CASE("bounds encoding exponent 0", "[bounds]") {
      *
      * top == 0x20, base == 0x0
      */
-    CHECK(cap.cr_pesbt == 0x1e1f00004080000);
+    CHECK(cap.cr_pesbt == 0x1e3f00004080000);
 }
 
 TEST_CASE("bounds encoding exponent > 0", "[bounds]") {
@@ -71,5 +71,5 @@ TEST_CASE("bounds encoding exponent > 0", "[bounds]") {
      * LCout = 0, LMSB = 1
      * c_t = 0, c_b = 0
      */
-    CHECK(cap.cr_pesbt == 0x1e1f00001334105);
+    CHECK(cap.cr_pesbt == 0x1e3f00001334105);
 }
