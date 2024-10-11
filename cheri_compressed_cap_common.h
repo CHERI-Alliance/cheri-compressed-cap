@@ -82,6 +82,7 @@ enum {
     _CC_N(NULL_PESBT) = _CC_ENCODE_FIELD(0, UPERMS) | _CC_ENCODE_FIELD(0, HWPERMS) | _CC_ENCODE_FIELD(0, RESERVED) |
                         _CC_ENCODE_FIELD(0, FLAGS) |
                         _CC_ENCODE_FIELD(0, CT) |
+                        _CC_ENCODE_FIELD(0, CL) |
                         _CC_ENCODE_FIELD(1, INTERNAL_EXPONENT) | _CC_ENCODE_FIELD(0, EF) |
                         _CC_ENCODE_FIELD(_CC_N(OTYPE_UNSEALED), OTYPE) |
                         _CC_ENCODE_FIELD(_CC_N(NULL_T), EXP_NONZERO_TOP) | _CC_ENCODE_FIELD(0, EXP_NONZERO_BOTTOM) |
@@ -1299,6 +1300,8 @@ static inline _cc_cap_t _cc_N(make_max_perms_cap_m_lv)(_cc_addr_t base, _cc_addr
     creg.cr_m = m ? 1 : 0;
     assert(lvbits <= 1 && "We only support local-global levels.");
     creg.cr_lvbits = lvbits;
+    /* We need the most global level here, the level can only be decreased. */
+    creg.cr_pesbt |= _CC_ENCODE_FIELD(lvbits, CL);
     creg.cr_arch_perm = CAP_AP_C | CAP_AP_W | CAP_AP_R | CAP_AP_X | CAP_AP_ASR | CAP_AP_LM;
     _cc_N(m_ap_compress)(&creg);
     return creg;
