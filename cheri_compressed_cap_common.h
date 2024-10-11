@@ -165,7 +165,7 @@ struct _cc_N(cap) {
     uint8_t cr_bounds_valid; /* Set if bounds decode was given an invalid cap */
     uint8_t cr_exp;          /* Exponent */
     uint8_t cr_extra;        /* Additional data stored by the caller */
-    uint8_t cr_arch_perm;    /* decoded architectural permissions (AP) */
+    uint16_t cr_arch_perm;   /* decoded architectural permissions (AP) */
     uint8_t cr_m;            /* decoded M bit (or a copy of the bit in pesbt) */
     uint8_t cr_lvbits;       /* lvbits for Zcherilevel (0 if unsupported) */
 #ifdef __cplusplus
@@ -302,7 +302,7 @@ struct _cc_N(bounds_bits) {
 // access must go through cr_arch_perm and cr_m.
 // TODO: Is there a way to enforce this? Do we need ALL_WRAPPERS_INTERNAL()?
 ALL_WRAPPERS(M, m, uint8_t)
-ALL_WRAPPERS(AP, ap, uint8_t)
+ALL_WRAPPERS(AP, ap, uint16_t)
 ALL_WRAPPERS(SDP, sdp, uint8_t)
 ALL_WRAPPERS(HWPERMS, perms, uint32_t)
 ALL_WRAPPERS(UPERMS, uperms, uint32_t)
