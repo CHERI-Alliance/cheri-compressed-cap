@@ -81,6 +81,7 @@ enum {
      */
     _CC_N(NULL_PESBT) = _CC_ENCODE_FIELD(0, UPERMS) | _CC_ENCODE_FIELD(0, HWPERMS) | _CC_ENCODE_FIELD(0, RESERVED) |
                         _CC_ENCODE_FIELD(0, FLAGS) |
+                        _CC_ENCODE_FIELD(0, CT) |
                         _CC_ENCODE_FIELD(1, INTERNAL_EXPONENT) | _CC_ENCODE_FIELD(0, EF) |
                         _CC_ENCODE_FIELD(_CC_N(OTYPE_UNSEALED), OTYPE) |
                         _CC_ENCODE_FIELD(_CC_N(NULL_T), EXP_NONZERO_TOP) | _CC_ENCODE_FIELD(0, EXP_NONZERO_BOTTOM) |
@@ -1268,6 +1269,7 @@ static inline _cc_cap_t _cc_N(make_max_perms_cap_m)(_cc_addr_t base, _cc_addr_t 
     /* There's no need to exclude unused fields here. */
     creg.cr_pesbt = _CC_ENCODE_FIELD(_CC_N(UPERMS_ALL), UPERMS) | _CC_ENCODE_FIELD(_CC_N(PERMS_ALL), HWPERMS) |
                     _CC_ENCODE_FIELD(_CC_N(FIELD_SDP_MAX_VALUE), SDP) |
+                    _CC_ENCODE_FIELD(0, CT) |
                     _CC_ENCODE_FIELD(_CC_N(OTYPE_UNSEALED), OTYPE);
     creg.cr_tag = true;
     creg.cr_exp = _CC_N(RESET_EXP);
