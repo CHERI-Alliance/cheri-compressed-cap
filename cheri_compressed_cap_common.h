@@ -167,6 +167,7 @@ struct _cc_N(cap) {
     uint8_t cr_extra;        /* Additional data stored by the caller */
     uint8_t cr_arch_perm;    /* decoded architectural permissions (AP) */
     uint8_t cr_m;            /* decoded M bit (or a copy of the bit in pesbt) */
+    uint8_t cr_lvbits;       /* lvbits for Zcherilevel (0 if unsupported) */
 #ifdef __cplusplus
     inline _cc_addr_t base() const { return cr_base; }
     inline _cc_addr_t address() const { return _cr_cursor; }
@@ -739,6 +740,7 @@ static inline void _cc_N(unsafe_decompress_raw)(_cc_addr_t pesbt, _cc_addr_t cur
     cdp->cr_tag = tag;
     cdp->_cr_cursor = cursor;
     cdp->cr_pesbt = pesbt;
+    cdp->cr_lvbits = 0;
 
     _cc_bounds_bits bounds = _cc_N(extract_bounds_bits)(pesbt);
     bool valid = _cc_N(compute_base_top)(bounds, cursor, &cdp->cr_base, &cdp->_cr_top);
@@ -1270,6 +1272,7 @@ static inline _cc_cap_t _cc_N(make_max_perms_cap_m)(_cc_addr_t base, _cc_addr_t 
     assert(exact_input && "Invalid arguments");
     assert(_cc_N(is_representable_cap_exact)(&creg));
     creg.cr_m = m ? 1 : 0;
+    creg.cr_lvbits = 0;
     creg.cr_arch_perm = CAP_AP_C | CAP_AP_W | CAP_AP_R | CAP_AP_X | CAP_AP_ASR;
     _cc_N(m_ap_compress)(&creg);
     return creg;
