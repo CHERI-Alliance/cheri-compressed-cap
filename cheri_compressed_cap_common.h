@@ -1303,6 +1303,9 @@ static inline _cc_cap_t _cc_N(make_max_perms_cap_m_lv)(_cc_addr_t base, _cc_addr
     /* We need the most global level here, the level can only be decreased. */
     creg.cr_pesbt |= _CC_ENCODE_FIELD(lvbits, CL);
     creg.cr_arch_perm = CAP_AP_C | CAP_AP_W | CAP_AP_R | CAP_AP_X | CAP_AP_ASR | CAP_AP_LM;
+    if (lvbits > 0) {
+        creg.cr_arch_perm = CAP_AP_EL | CAP_AP_SL;
+    }
     _cc_N(m_ap_compress)(&creg);
     return creg;
 }
