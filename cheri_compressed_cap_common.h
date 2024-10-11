@@ -749,8 +749,8 @@ static inline void _cc_N(unsafe_decompress_raw)(_cc_addr_t pesbt, _cc_addr_t cur
     _cc_N(m_ap_decompress)(cdp);
 }
 
-static inline void _cc_N(decompress_raw)(_cc_addr_t pesbt, _cc_addr_t cursor, bool tag, _cc_cap_t* cdp) {
-    _cc_N(unsafe_decompress_raw)(pesbt, cursor, tag, 0, cdp);
+static inline void _cc_N(decompress_raw__)(_cc_addr_t pesbt, _cc_addr_t cursor, bool tag, uint8_t lvbits,_cc_cap_t* cdp) {
+    _cc_N(unsafe_decompress_raw)(pesbt, cursor, tag, lvbits, cdp);
     if (tag) {
         _cc_debug_assert(cdp->cr_base <= _CC_N(MAX_ADDR));
 #ifndef CC_IS_MORELLO
@@ -762,11 +762,15 @@ static inline void _cc_N(decompress_raw)(_cc_addr_t pesbt, _cc_addr_t cursor, bo
     }
 }
 
+static inline void _cc_N(decompress_raw)(_cc_addr_t pesbt, _cc_addr_t cursor, bool tag, _cc_cap_t* cdp) {
+    _cc_N(decompress_raw__)(pesbt, cursor, tag, 0, cdp);
+}
+
 /*
  * Decompress a 128-bit capability.
  */
 static inline void _cc_N(decompress_mem)(uint64_t pesbt, uint64_t cursor, bool tag, _cc_cap_t* cdp) {
-    _cc_N(decompress_raw)(pesbt ^ _CC_N(NULL_XOR_MASK), cursor, tag, cdp);
+    _cc_N(decompress_raw__)(pesbt ^ _CC_N(NULL_XOR_MASK), cursor, tag, 0, cdp);
 }
 
 static inline bool _cc_N(is_cap_sealed)(const _cc_cap_t* cp) {
