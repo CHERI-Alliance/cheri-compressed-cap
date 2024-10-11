@@ -1274,8 +1274,9 @@ static inline bool _cc_N(checked_setbounds)(_cc_cap_t* cap, _cc_length_t req_len
     return _cc_N(setbounds)(cap, req_len);
 }
 
-// For risc-v cheri formats, the value of M depends on Zcherihybrid support. 
-static inline _cc_cap_t _cc_N(make_max_perms_cap_m)(_cc_addr_t base, _cc_addr_t cursor, _cc_length_t top, bool m) {
+// For risc-v cheri formats, the value of M depends on Zcherihybrid support.
+// CL field and SL, EL perms depend on lvbits (number of Zcherilevels or 0 if unsupported)
+static inline _cc_cap_t _cc_N(make_max_perms_cap_m_lv)(_cc_addr_t base, _cc_addr_t cursor, _cc_length_t top, bool m, uint8_t lvbits) {
     _cc_cap_t creg;
     memset(&creg, 0, sizeof(creg));
     assert(base <= top && "Invalid arguments");
@@ -1295,14 +1296,15 @@ static inline _cc_cap_t _cc_N(make_max_perms_cap_m)(_cc_addr_t base, _cc_addr_t 
     assert(exact_input && "Invalid arguments");
     assert(_cc_N(is_representable_cap_exact)(&creg));
     creg.cr_m = m ? 1 : 0;
-    creg.cr_lvbits = 0;
+    assert(lvbits <= 1 && "We only support local-global levels.");
+    creg.cr_lvbits = lvbits;
     creg.cr_arch_perm = CAP_AP_C | CAP_AP_W | CAP_AP_R | CAP_AP_X | CAP_AP_ASR | CAP_AP_LM;
     _cc_N(m_ap_compress)(&creg);
     return creg;
 }
 
 static inline _cc_cap_t _cc_N(make_max_perms_cap)(_cc_addr_t base, _cc_addr_t cursor, _cc_length_t top) {
-    return _cc_N(make_max_perms_cap_m)(base, cursor, top, false);
+    return _cc_N(make_max_perms_cap_m_lv)(base, cursor, top, false, 0);
 }
 
 /* @return the mask that needs to be applied to base in order to get a precisely representable capability */
