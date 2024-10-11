@@ -48,7 +48,8 @@ enum {
     _CC_FIELD(SDP, 120, 117),
     _CC_FIELD(M, 116, 116),
     _CC_FIELD(AP, 115, 108),
-    _CC_FIELD(RESERVED, 107, 92),
+    _CC_FIELD(CL, 107, 107),
+    _CC_FIELD(RESERVED, 106, 92),
     _CC_FIELD(CT, 91, 91),
     _CC_FIELD(EBT, 90, 64),
 

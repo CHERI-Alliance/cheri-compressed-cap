@@ -111,7 +111,7 @@ enum {
 #define _CC_CURSOR_MASK _CC_N(CURSOR_MASK)
 // Check that the sizes of the individual fields match up
 _CC_STATIC_ASSERT_SAME(_CC_N(FIELD_EBT_SIZE) + _CC_N(FIELD_OTYPE_SIZE) + _CC_N(FIELD_FLAGS_SIZE) +
-                           _CC_N(FIELD_CT_SIZE) +
+                           _CC_N(FIELD_CT_SIZE) + _CC_N(FIELD_CL_SIZE) +
                            _CC_N(FIELD_M_SIZE) + _CC_N(FIELD_AP_SIZE) + _CC_N(FIELD_SDP_SIZE) +
                            _CC_N(FIELD_RESERVED_SIZE) + _CC_N(FIELD_RESERVED2_SIZE) +
                            _CC_N(FIELD_HWPERMS_SIZE) + _CC_N(FIELD_UPERMS_SIZE),
@@ -305,6 +305,7 @@ struct _cc_N(bounds_bits) {
 ALL_WRAPPERS(M, m, uint8_t)
 ALL_WRAPPERS(AP, ap, uint16_t)
 ALL_WRAPPERS(SDP, sdp, uint8_t)
+ALL_WRAPPERS(CL, cl, uint8_t)
 ALL_WRAPPERS(HWPERMS, perms, uint32_t)
 ALL_WRAPPERS(UPERMS, uperms, uint32_t)
 ALL_WRAPPERS(OTYPE, otype, uint32_t)
