@@ -588,14 +588,14 @@ static inline void _cc_N(m_ap_compress)(_cc_cap_t *cap)
           res |= 1;
       }
       switch (cap->cr_arch_perm &
-              (CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_ASR)) {
-          case CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_ASR:
+              (CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_LM | CAP_AP_ASR)) {
+          case CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_LM | CAP_AP_ASR:
               res |= 0;
               break;
-          case CAP_AP_R | CAP_AP_C:
+          case CAP_AP_R | CAP_AP_C | CAP_AP_LM:
               res |= 2;
               break;
-          case CAP_AP_R | CAP_AP_W | CAP_AP_C:
+          case CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_LM:
               res |= 4;
               break;
           case CAP_AP_R | CAP_AP_W:
@@ -606,7 +606,7 @@ static inline void _cc_N(m_ap_compress)(_cc_cap_t *cap)
               res = UINT8_MAX;
       }
     }
-    else if (cap->cr_arch_perm & CAP_AP_C) {
+    else if ((cap->cr_arch_perm & (CAP_AP_C | CAP_AP_LM)) == (CAP_AP_C | CAP_AP_LM)) {
       res |= CAP_AP_Q3;
       switch (cap->cr_arch_perm &
               (CAP_AP_R | CAP_AP_W | CAP_AP_X | CAP_AP_ASR)) {
@@ -618,6 +618,15 @@ static inline void _cc_N(m_ap_compress)(_cc_cap_t *cap)
               break;
           default:
               res = UINT8_MAX;
+      }
+    }
+    else if (cap->cr_arch_perm & CAP_AP_C) {
+      res |= CAP_AP_Q2;
+      if (cap->cr_arch_perm == (CAP_AP_R | CAP_AP_C)) {
+          res |= 3;
+      }
+      else {
+          res = UINT8_MAX;
       }
     }
     else {
@@ -690,13 +699,13 @@ static inline void _cc_N(m_ap_decompress)(_cc_cap_t *cap)
             }
             switch ((perm_comp & ~CAP_AP_Q_MASK) >> 1) {
                 case 0:
-                    res |= CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_X | CAP_AP_ASR;
+                    res |= CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_LM | CAP_AP_X | CAP_AP_ASR;
                     break;
                 case 1:
-                    res |= CAP_AP_R | CAP_AP_C | CAP_AP_X;
+                    res |= CAP_AP_R | CAP_AP_C | CAP_AP_LM | CAP_AP_X;
                     break;
                 case 2:
-                    res |= CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_X;
+                    res |= CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_LM | CAP_AP_X;
                     break;
                 case 3:
                     res |= CAP_AP_R | CAP_AP_W | CAP_AP_X;
@@ -708,26 +717,31 @@ static inline void _cc_N(m_ap_decompress)(_cc_cap_t *cap)
             }
             break;
         case CAP_AP_Q2:
-            /*
-             * Unsupported encoding in quadrant 2. All permissions are
-             * implicitly granted.
-             */
-            res |= CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_X | CAP_AP_ASR;
+            if ((perm_comp & ~CAP_AP_Q_MASK) == 3) {
+                res |= CAP_AP_R | CAP_AP_C;
+            }
+            else {
+                /*
+                 * Unsupported encoding in quadrant 2. All permissions are
+                 * implicitly granted.
+                 */
+                res |= CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_LM | CAP_AP_X | CAP_AP_ASR;
+            }
             break;
         case CAP_AP_Q3:
             switch (perm_comp & ~CAP_AP_Q_MASK) {
                 case 3:
-                    res |= CAP_AP_R | CAP_AP_C;
+                    res |= CAP_AP_R | CAP_AP_C | CAP_AP_LM;
                     break;
                 case 7:
-                    res |= CAP_AP_R | CAP_AP_W | CAP_AP_C;
+                    res |= CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_LM;
                     break;
                 default:
                     /*
                      * Unsupported encoding in quadrant 3. All permissions are
                      * implicitly granted.
                      */
-                    res |= CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_X | CAP_AP_ASR;
+                    res |= CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_LM | CAP_AP_X | CAP_AP_ASR;
             }
             break;
     }
