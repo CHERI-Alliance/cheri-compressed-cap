@@ -8,10 +8,14 @@
  * This didn't work: for error cases, the result depends on the direction.
  */
 
-#define TEST_CASE_M_AP_COMP(_cr_m, _cr_arch_perm, _m_ap) \
-   TEST_CASE(#_cr_arch_perm "-" #_cr_m " compress", "[compress]") { \
+#define LVB_0 0
+#define LVB_1 1
+
+#define TEST_CASE_M_AP_COMP(_cr_lvbits, _cr_m, _cr_arch_perm, _m_ap) \
+   TEST_CASE(#_cr_lvbits "-" #_cr_arch_perm "-" #_cr_m " compress", "[compress]") { \
       _cc_cap_t cap; \
       memset(&cap, 0x00, sizeof(cap)); \
+      cap.cr_lvbits = (_cr_lvbits); \
 \
       cap.cr_arch_perm |= (_cr_arch_perm); \
       cap.cr_m |= (_cr_m); \
