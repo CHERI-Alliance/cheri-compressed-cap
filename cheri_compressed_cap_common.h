@@ -587,6 +587,9 @@ static inline void _cc_N(m_ap_decompress)(_cc_cap_t *cap)
 
 #define CAP_AP_Q_MASK ((uint8_t)(0b11 <<3))
 
+#define EL_OPT(cap) (((cap)->cr_lvbits == 0) ? 0 : CAP_AP_EL)
+#define SL_OPT(cap) (((cap)->cr_lvbits == 0) ? 0 : CAP_AP_SL)
+
 static inline void _cc_N(m_ap_compress)(_cc_cap_t *cap)
 {
     uint8_t res = 0;
@@ -615,27 +618,45 @@ static inline void _cc_N(m_ap_compress)(_cc_cap_t *cap)
               res = UINT8_MAX;
       }
     }
-    else if ((cap->cr_arch_perm & (CAP_AP_C | CAP_AP_LM)) == (CAP_AP_C | CAP_AP_LM)) {
+    else if (cap->cr_m) {
+        /* M is valid only in Q1. Otherwise, M is reserved and must be 0. */
+        res = UINT8_MAX;
+    }
+    else if ((cap->cr_arch_perm &
+                (CAP_AP_R | CAP_AP_C | CAP_AP_LM | CAP_AP_EL | CAP_AP_X | CAP_AP_ASR)) ==
+            (CAP_AP_R | CAP_AP_C | CAP_AP_LM | EL_OPT(cap))) {
       res |= CAP_AP_Q3;
-      switch (cap->cr_arch_perm &
-              (CAP_AP_R | CAP_AP_W | CAP_AP_X | CAP_AP_ASR)) {
-          case CAP_AP_R:
-              res |= 0x3;
+
+      switch (cap->cr_arch_perm & (CAP_AP_W | SL_OPT(cap))) {
+          case 0:
+              res |= 3;
               break;
-          case CAP_AP_R | CAP_AP_W:
-              res |= 0x7;
+          case CAP_AP_W | CAP_AP_SL:
+              res |= 6;
+              break;
+          case CAP_AP_W:
+              res |= 7;
               break;
           default:
               res = UINT8_MAX;
       }
     }
-    else if (cap->cr_arch_perm & CAP_AP_C) {
+    else if ((cap->cr_arch_perm &
+                (CAP_AP_R | CAP_AP_C | CAP_AP_EL | CAP_AP_X | CAP_AP_ASR )) ==
+            (CAP_AP_R | CAP_AP_C)) {
       res |= CAP_AP_Q2;
-      if (cap->cr_arch_perm == (CAP_AP_R | CAP_AP_C)) {
-          res |= 3;
-      }
-      else {
-          res = UINT8_MAX;
+      switch (cap->cr_arch_perm & (CAP_AP_W | CAP_AP_LM | SL_OPT(cap))) {
+          case 0:
+              res |= 3;
+              break;
+          case CAP_AP_W | CAP_AP_LM | CAP_AP_SL:
+              res |= 6;
+              break;
+          case CAP_AP_W | CAP_AP_LM:
+              res |= 7;
+              break;
+          default:
+              res = UINT8_MAX;
       }
     }
     else {
