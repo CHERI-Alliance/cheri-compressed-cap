@@ -673,11 +673,23 @@ static inline void _cc_N(m_ap_compress)(_cc_cap_t *cap)
     _cc_N(update_ap)(cap, res);
 }
 
+/*
+ * This shifts the lvbits value when we want to check both lvbits and the
+ * permission encoding (without the quadrant info) at once.
+ */
+#define __LVBITS(x) ((x) << 3)
+
 static inline void _cc_N(m_ap_decompress)(_cc_cap_t *cap)
 {
     uint8_t perm_comp = _cc_N(get_ap)(cap);
     bool m_bit = false;
     uint8_t res = 0;
+
+    /*
+     * For the internal processing below, we assume that EL, SL are used.
+     * If the caller does not use EL and SL, we clear those bits before we
+     * return the bitmask.
+     */
 
     switch (perm_comp & CAP_AP_Q_MASK) {
         case CAP_AP_Q0:
@@ -708,13 +720,13 @@ static inline void _cc_N(m_ap_decompress)(_cc_cap_t *cap)
             }
             switch ((perm_comp & ~CAP_AP_Q_MASK) >> 1) {
                 case 0:
-                    res |= CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_LM | CAP_AP_X | CAP_AP_ASR;
+                    res |= CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_LM | CAP_AP_X | CAP_AP_ASR | CAP_AP_EL | CAP_AP_SL;
                     break;
                 case 1:
-                    res |= CAP_AP_R | CAP_AP_C | CAP_AP_LM | CAP_AP_X;
+                    res |= CAP_AP_R | CAP_AP_C | CAP_AP_LM | CAP_AP_X | CAP_AP_EL | CAP_AP_SL;
                     break;
                 case 2:
-                    res |= CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_LM | CAP_AP_X;
+                    res |= CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_LM | CAP_AP_X | CAP_AP_EL | CAP_AP_SL;
                     break;
                 case 3:
                     res |= CAP_AP_R | CAP_AP_W | CAP_AP_X;
@@ -726,35 +738,53 @@ static inline void _cc_N(m_ap_decompress)(_cc_cap_t *cap)
             }
             break;
         case CAP_AP_Q2:
-            if ((perm_comp & ~CAP_AP_Q_MASK) == 3) {
-                res |= CAP_AP_R | CAP_AP_C;
-            }
-            else {
-                /*
-                 * Unsupported encoding in quadrant 2. All permissions are
-                 * implicitly granted.
-                 */
-                res |= CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_LM | CAP_AP_X | CAP_AP_ASR;
+            switch (__LVBITS(cap->cr_lvbits) | (perm_comp & ~CAP_AP_Q_MASK)) {
+                case __LVBITS(0) | 3:
+                case __LVBITS(1) | 3:
+                    res |= CAP_AP_R | CAP_AP_C;
+                    break;
+                /* 4 and 5 are reserved for lvbits=2, we don't support this */
+                case __LVBITS(1) | 6:
+                    res |= CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_LM | CAP_AP_SL;
+                    break;
+                case __LVBITS(1) | 7:
+                    res |= CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_LM;
+                    break;
+                default:
+                    /*
+                     * Unsupported encoding in quadrant 2. All permissions are
+                     * implicitly granted.
+                     */
+                    res |= CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_LM | CAP_AP_X | CAP_AP_ASR | CAP_AP_EL | CAP_AP_SL;
             }
             break;
         case CAP_AP_Q3:
-            switch (perm_comp & ~CAP_AP_Q_MASK) {
-                case 3:
-                    res |= CAP_AP_R | CAP_AP_C | CAP_AP_LM;
+            switch (__LVBITS(cap->cr_lvbits) | (perm_comp & ~CAP_AP_Q_MASK)) {
+                case __LVBITS(0) | 3:
+                case __LVBITS(1) | 3:
+                    res |= CAP_AP_R | CAP_AP_C | CAP_AP_LM | CAP_AP_EL;
                     break;
-                case 7:
-                    res |= CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_LM;
+                /* 4 and 5 are reserved for lvbits=2, we don't support this */
+                case __LVBITS(1) | 6:
+                    res |= CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_LM | CAP_AP_EL | CAP_AP_SL;
+                    break;
+                case __LVBITS(0) | 7:
+                case __LVBITS(1) | 7:
+                    res |= CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_LM | CAP_AP_EL;
                     break;
                 default:
                     /*
                      * Unsupported encoding in quadrant 3. All permissions are
                      * implicitly granted.
                      */
-                    res |= CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_LM | CAP_AP_X | CAP_AP_ASR;
+                    res |= CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_LM | CAP_AP_X | CAP_AP_ASR | CAP_AP_EL | CAP_AP_SL;
             }
             break;
     }
 
+    if (cap->cr_lvbits == 0) {
+        res &= ~(CAP_AP_EL | CAP_AP_SL);
+    }
     cap->cr_arch_perm = res;
     cap->cr_m = m_bit ? 1 : 0;
 }
