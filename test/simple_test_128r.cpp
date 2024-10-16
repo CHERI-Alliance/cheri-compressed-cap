@@ -24,12 +24,12 @@ TEST_CASE_M_AP_COMP(0, CAP_AP_R, CAP_AP_R)
 
 TEST_CASE_M_AP_COMP(
         1, (CAP_AP_X | CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_ASR),
-        1 << 5 | (CAP_AP_X | CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_ASR))
+        1 << 8 | (CAP_AP_X | CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_ASR))
 
 /* M, AP decompression */
 
 TEST_CASE_M_AP_DECOMP(
-        1 << 5 | (CAP_AP_X | CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_ASR),
+        1 << 8 | (CAP_AP_X | CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_ASR),
         1, (CAP_AP_X | CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_ASR))
 
 TEST_CASE_M_AP_DECOMP(
@@ -50,7 +50,7 @@ TEST_CASE("bounds encoding exponent 0", "[bounds]") {
      *
      * top == 0x20, base == 0x0
      */
-    CHECK(cap.cr_pesbt == 0x1ef800004080000);
+    CHECK(cap.cr_pesbt == 0x1e1f00004080000);
 }
 
 TEST_CASE("bounds encoding exponent > 0", "[bounds]") {
@@ -71,5 +71,5 @@ TEST_CASE("bounds encoding exponent > 0", "[bounds]") {
      * LCout = 0, LMSB = 1
      * c_t = 0, c_b = 0
      */
-    CHECK(cap.cr_pesbt == 0x1ef800001334105);
+    CHECK(cap.cr_pesbt == 0x1e1f00001334105);
 }
