@@ -57,6 +57,53 @@ TEST_CASE_M_AP_COMP(LVB_0, 0, CAP_AP_C, 0);
 
 /* --- lvbits = 1, valid permission set --- */
 
+TEST_CASE_M_AP_COMP(LVB_1, 0, CAP_AP_R, CAP_AP_Q0 | 1)
+TEST_CASE_M_AP_COMP(LVB_1, 0, CAP_AP_W, CAP_AP_Q0 | 4)
+TEST_CASE_M_AP_COMP(LVB_1, 0, CAP_AP_R | CAP_AP_W, CAP_AP_Q0 | 5)
+
+TEST_CASE_M_AP_COMP(LVB_1,
+        0, CAP_AP_X | CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_LM | CAP_AP_ASR | CAP_AP_EL | CAP_AP_SL,
+        CAP_AP_Q1 | 0)
+TEST_CASE_M_AP_COMP(LVB_1,
+        1, CAP_AP_X | CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_LM | CAP_AP_ASR | CAP_AP_EL | CAP_AP_SL,
+        CAP_AP_Q1 | 1)
+TEST_CASE_M_AP_COMP(LVB_1,
+        0, CAP_AP_X | CAP_AP_R | CAP_AP_C | CAP_AP_LM | CAP_AP_EL | CAP_AP_SL,
+        CAP_AP_Q1 | 2)
+TEST_CASE_M_AP_COMP(LVB_1,
+        1, CAP_AP_X | CAP_AP_R | CAP_AP_C | CAP_AP_LM | CAP_AP_EL | CAP_AP_SL,
+        CAP_AP_Q1 | 3)
+TEST_CASE_M_AP_COMP(LVB_1,
+        0, CAP_AP_X | CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_LM | CAP_AP_EL | CAP_AP_SL,
+        CAP_AP_Q1 | 4)
+TEST_CASE_M_AP_COMP(LVB_1,
+        1, CAP_AP_X | CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_LM | CAP_AP_EL | CAP_AP_SL,
+        CAP_AP_Q1 | 5)
+TEST_CASE_M_AP_COMP(LVB_1,
+        0, CAP_AP_X | CAP_AP_R | CAP_AP_W,
+        CAP_AP_Q1 | 6)
+TEST_CASE_M_AP_COMP(LVB_1,
+        1, CAP_AP_X | CAP_AP_R | CAP_AP_W,
+        CAP_AP_Q1 | 7)
+
+TEST_CASE_M_AP_COMP(LVB_1, 0, CAP_AP_R | CAP_AP_C, CAP_AP_Q2 | 3)
+TEST_CASE_M_AP_COMP(LVB_1,
+        0, CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_LM | CAP_AP_SL,
+        CAP_AP_Q2 | 6)
+TEST_CASE_M_AP_COMP(LVB_1,
+        0, CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_LM,
+        CAP_AP_Q2 | 7)
+
+TEST_CASE_M_AP_COMP(LVB_1,
+        0, CAP_AP_R | CAP_AP_C | CAP_AP_LM | CAP_AP_EL,
+        CAP_AP_Q3 | 3)
+TEST_CASE_M_AP_COMP(LVB_1,
+        0, CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_LM | CAP_AP_EL | CAP_AP_SL,
+        CAP_AP_Q3 | 6)
+TEST_CASE_M_AP_COMP(LVB_1,
+        0, CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_LM | CAP_AP_EL,
+        CAP_AP_Q3 | 7)
+
 /* --- lvbits = 0, invalid permission set --- */
 
 /* --- lvbits = 1, invalid permission set --- */
