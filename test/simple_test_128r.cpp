@@ -26,6 +26,11 @@ TEST_CASE_M_AP_COMP(LVB_0,
         1, (CAP_AP_X | CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_ASR),
         1 << _CC_N(FIELD_AP_SIZE) | (CAP_AP_X | CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_ASR))
 
+/* unused SL and EL permissions must be removed */
+TEST_CASE_M_AP_COMP(LVB_0,
+        0, CAP_AP_X | CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_LM | CAP_AP_SL | CAP_AP_EL,
+        CAP_AP_X | CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_LM)
+
 /* M, AP decompression */
 
 TEST_CASE_M_AP_DECOMP(LVB_0,
