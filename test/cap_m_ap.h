@@ -26,10 +26,11 @@
 }
 
 
-#define TEST_CASE_M_AP_DECOMP(_m_ap, _cr_m, _cr_arch_perm) \
-   TEST_CASE(#_m_ap " decompress", "[decompress]") { \
+#define TEST_CASE_M_AP_DECOMP(_cr_lvbits, _m_ap, _cr_m, _cr_arch_perm) \
+   TEST_CASE(#_cr_lvbits "-" #_m_ap " decompress", "[decompress]") { \
       _cc_cap_t cap; \
       memset(&cap, 0x00, sizeof(cap)); \
+      cap.cr_lvbits = (_cr_lvbits); \
 \
       _cc_N(update_m)(&cap, (_m_ap) >> _CC_N(FIELD_AP_SIZE)); \
       _cc_N(update_ap)(&cap, (_m_ap) & _CC_N(FIELD_AP_MASK_NOT_SHIFTED)); \
