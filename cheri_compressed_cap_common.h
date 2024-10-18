@@ -676,8 +676,12 @@ static inline void _cc_N(m_ap_compress)(_cc_cap_t *cap)
 /*
  * This shifts the lvbits value when we want to check both lvbits and the
  * permission encoding (without the quadrant info) at once.
+ *
+ * __builtin_ctz has been supported in gcc since v3.4.6 - it's tricky to
+ * check if it is available (__has_builtin was added to gcc 10)
+ * clang supports __builtin_ctz as well
  */
-#define __LVBITS(x) ((x) << 3)
+#define __LVBITS(x) ((x) << __builtin_ctz(CAP_AP_Q_MASK))
 
 static inline void _cc_N(m_ap_decompress)(_cc_cap_t *cap)
 {
