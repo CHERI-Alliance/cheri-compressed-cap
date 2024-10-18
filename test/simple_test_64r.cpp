@@ -126,6 +126,11 @@ TEST_CASE_M_AP_COMP(LVB_0,
 
 /* --- lvbits = 1, invalid permission set --- */
 
+/* SL makes no sense without W */
+TEST_CASE_M_AP_COMP(LVB_1,
+        0, CAP_AP_R | CAP_AP_C | CAP_AP_LM | CAP_AP_EL | CAP_AP_SL,
+        0);
+
 /*
  * AP decompression
  */
