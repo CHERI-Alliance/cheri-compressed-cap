@@ -254,6 +254,37 @@ TEST_CASE_M_AP_DECOMP(LVB_0, CAP_AP_Q3 | 6,
 
 /* --- lvbits = 1, invalid encoding --- */
 
+/* invalid in Q0 -> no permissions */
+TEST_CASE_M_AP_DECOMP(LVB_1, CAP_AP_Q0 | 0, 0, 0)
+TEST_CASE_M_AP_DECOMP(LVB_1, CAP_AP_Q0 | 2, 0, 0)
+TEST_CASE_M_AP_DECOMP(LVB_1, CAP_AP_Q0 | 3, 0, 0)
+TEST_CASE_M_AP_DECOMP(LVB_1, CAP_AP_Q0 | 6, 0, 0)
+TEST_CASE_M_AP_DECOMP(LVB_1, CAP_AP_Q0 | 7, 0, 0)
+
+/* invalid in Q2 -> all permissions */
+TEST_CASE_M_AP_DECOMP(LVB_1, CAP_AP_Q2 | 0,
+        0, (CAP_AP_X | CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_LM | CAP_AP_ASR | CAP_AP_EL | CAP_AP_SL))
+TEST_CASE_M_AP_DECOMP(LVB_1, CAP_AP_Q2 | 1,
+        0, (CAP_AP_X | CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_LM | CAP_AP_ASR | CAP_AP_EL | CAP_AP_SL))
+TEST_CASE_M_AP_DECOMP(LVB_1, CAP_AP_Q2 | 2,
+        0, (CAP_AP_X | CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_LM | CAP_AP_ASR | CAP_AP_EL | CAP_AP_SL))
+TEST_CASE_M_AP_DECOMP(LVB_1, CAP_AP_Q2 | 4,
+        0, (CAP_AP_X | CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_LM | CAP_AP_ASR | CAP_AP_EL | CAP_AP_SL))
+TEST_CASE_M_AP_DECOMP(LVB_1, CAP_AP_Q2 | 5,
+        0, (CAP_AP_X | CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_LM | CAP_AP_ASR | CAP_AP_EL | CAP_AP_SL))
+
+/* invalid in Q3 -> all permissions */
+TEST_CASE_M_AP_DECOMP(LVB_1, CAP_AP_Q3 | 0,
+        0, (CAP_AP_X | CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_LM | CAP_AP_ASR | CAP_AP_EL | CAP_AP_SL))
+TEST_CASE_M_AP_DECOMP(LVB_1, CAP_AP_Q3 | 1,
+        0, (CAP_AP_X | CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_LM | CAP_AP_ASR | CAP_AP_EL | CAP_AP_SL))
+TEST_CASE_M_AP_DECOMP(LVB_1, CAP_AP_Q3 | 2,
+        0, (CAP_AP_X | CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_LM | CAP_AP_ASR | CAP_AP_EL | CAP_AP_SL))
+TEST_CASE_M_AP_DECOMP(LVB_1, CAP_AP_Q3 | 4,
+        0, (CAP_AP_X | CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_LM | CAP_AP_ASR | CAP_AP_EL | CAP_AP_SL))
+TEST_CASE_M_AP_DECOMP(LVB_1, CAP_AP_Q3 | 5,
+        0, (CAP_AP_X | CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_LM | CAP_AP_ASR | CAP_AP_EL | CAP_AP_SL))
+
 
 TEST_CASE("bounds encoding, internal exponent, L8 = 1", "[bounds]") {
     /* params are base, cursor, top */
