@@ -168,15 +168,9 @@ TEST_CASE_M_AP_DECOMP(LVB_0,
 
 TEST_CASE_M_AP_DECOMP(LVB_0, CAP_AP_Q2 | 3,
         0, CAP_AP_R | CAP_AP_C)
-/* invalid in Q2 -> all permissions (Q2 does not encode the M-bit) */
-TEST_CASE_M_AP_DECOMP(LVB_0, CAP_AP_Q2 | 2,
-        0, CAP_AP_X | CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_LM | CAP_AP_ASR)
 
 TEST_CASE_M_AP_DECOMP(LVB_0, CAP_AP_Q3 | 3, 0, CAP_AP_LM | CAP_AP_C | CAP_AP_R)
 TEST_CASE_M_AP_DECOMP(LVB_0, CAP_AP_Q3 | 7, 0, CAP_AP_LM | CAP_AP_C | CAP_AP_R | CAP_AP_W)
-/* invalid in Q3 -> all permissions (Q3 does not encode the M-bit) */
-TEST_CASE_M_AP_DECOMP(LVB_0, CAP_AP_Q3 | 1,
-        0, CAP_AP_X | CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_LM | CAP_AP_ASR)
 
 /* --- lvbits = 1, valid encoding --- */
 
@@ -222,7 +216,41 @@ TEST_CASE_M_AP_DECOMP(LVB_1, CAP_AP_Q3 | 7, 0, CAP_AP_LM | CAP_AP_C | CAP_AP_R |
 /* --- lvbits = 0, invalid encoding --- */
 
 /* invalid in Q0 -> no permissions */
+TEST_CASE_M_AP_DECOMP(LVB_0, CAP_AP_Q0 | 0, 0, 0)
+TEST_CASE_M_AP_DECOMP(LVB_0, CAP_AP_Q0 | 2, 0, 0)
+TEST_CASE_M_AP_DECOMP(LVB_0, CAP_AP_Q0 | 3, 0, 0)
 TEST_CASE_M_AP_DECOMP(LVB_0, CAP_AP_Q0 | 6, 0, 0)
+TEST_CASE_M_AP_DECOMP(LVB_0, CAP_AP_Q0 | 7, 0, 0)
+
+/* invalid in Q2 -> all permissions */
+TEST_CASE_M_AP_DECOMP(LVB_0, CAP_AP_Q2 | 0,
+        0, CAP_AP_X | CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_LM | CAP_AP_ASR)
+TEST_CASE_M_AP_DECOMP(LVB_0, CAP_AP_Q2 | 1,
+        0, CAP_AP_X | CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_LM | CAP_AP_ASR)
+TEST_CASE_M_AP_DECOMP(LVB_0, CAP_AP_Q2 | 2,
+        0, CAP_AP_X | CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_LM | CAP_AP_ASR)
+TEST_CASE_M_AP_DECOMP(LVB_0, CAP_AP_Q2 | 4,
+        0, CAP_AP_X | CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_LM | CAP_AP_ASR)
+TEST_CASE_M_AP_DECOMP(LVB_0, CAP_AP_Q2 | 5,
+        0, CAP_AP_X | CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_LM | CAP_AP_ASR)
+TEST_CASE_M_AP_DECOMP(LVB_0, CAP_AP_Q2 | 6,
+        0, CAP_AP_X | CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_LM | CAP_AP_ASR)
+TEST_CASE_M_AP_DECOMP(LVB_0, CAP_AP_Q2 | 7,
+        0, CAP_AP_X | CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_LM | CAP_AP_ASR)
+
+/* invalid in Q3 -> all permissions */
+TEST_CASE_M_AP_DECOMP(LVB_0, CAP_AP_Q3 | 0,
+        0, CAP_AP_X | CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_LM | CAP_AP_ASR)
+TEST_CASE_M_AP_DECOMP(LVB_0, CAP_AP_Q3 | 1,
+        0, CAP_AP_X | CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_LM | CAP_AP_ASR)
+TEST_CASE_M_AP_DECOMP(LVB_0, CAP_AP_Q3 | 2,
+        0, CAP_AP_X | CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_LM | CAP_AP_ASR)
+TEST_CASE_M_AP_DECOMP(LVB_0, CAP_AP_Q3 | 4,
+        0, CAP_AP_X | CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_LM | CAP_AP_ASR)
+TEST_CASE_M_AP_DECOMP(LVB_0, CAP_AP_Q3 | 5,
+        0, CAP_AP_X | CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_LM | CAP_AP_ASR)
+TEST_CASE_M_AP_DECOMP(LVB_0, CAP_AP_Q3 | 6,
+        0, CAP_AP_X | CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_LM | CAP_AP_ASR)
 
 /* --- lvbits = 1, invalid encoding --- */
 
