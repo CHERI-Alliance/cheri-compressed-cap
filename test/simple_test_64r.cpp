@@ -16,6 +16,8 @@ TEST_CASE("update ct", "[ct]") {
  * AP compression
  */
 
+/* --- lvbits = 0, valid permission set --- */
+
 TEST_CASE_M_AP_COMP(LVB_0, 0, CAP_AP_R, CAP_AP_Q0 | 1)
 TEST_CASE_M_AP_COMP(LVB_0, 0, CAP_AP_W, CAP_AP_Q0 | 4)
 TEST_CASE_M_AP_COMP(LVB_0, 0, CAP_AP_R | CAP_AP_W, CAP_AP_Q0 | 5)
@@ -53,15 +55,21 @@ TEST_CASE_M_AP_COMP(LVB_0, 0, CAP_AP_LM | CAP_AP_C | CAP_AP_R | CAP_AP_W, CAP_AP
 /* Invalid permissions must result in "no permissions". */
 TEST_CASE_M_AP_COMP(LVB_0, 0, CAP_AP_C, 0);
 
+/* --- lvbits = 1, valid permission set --- */
+
+/* --- lvbits = 0, invalid permission set --- */
+
+/* --- lvbits = 1, invalid permission set --- */
+
 /*
  * AP decompression
  */
 
+/* --- lvbits = 0, valid encoding --- */
+
 TEST_CASE_M_AP_DECOMP(CAP_AP_Q0 | 1, 0, CAP_AP_R)
 TEST_CASE_M_AP_DECOMP(CAP_AP_Q0 | 4, 0, CAP_AP_W)
 TEST_CASE_M_AP_DECOMP(CAP_AP_Q0 | 5, 0, CAP_AP_R | CAP_AP_W)
-/* invalid in Q0 -> no permissions */
-TEST_CASE_M_AP_DECOMP(CAP_AP_Q0 | 6, 0, 0)
 
 TEST_CASE_M_AP_DECOMP(
         CAP_AP_Q1 | 0,
@@ -99,6 +107,16 @@ TEST_CASE_M_AP_DECOMP(CAP_AP_Q3 | 7, 0, CAP_AP_LM | CAP_AP_C | CAP_AP_R | CAP_AP
 /* invalid in Q3 -> all permissions (Q3 does not encode the M-bit) */
 TEST_CASE_M_AP_DECOMP(CAP_AP_Q3 | 1,
         0, CAP_AP_X | CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_LM | CAP_AP_ASR)
+
+/* --- lvbits = 1, valid encoding --- */
+
+/* --- lvbits = 0, invalid encoding --- */
+
+/* invalid in Q0 -> no permissions */
+TEST_CASE_M_AP_DECOMP(CAP_AP_Q0 | 6, 0, 0)
+
+/* --- lvbits = 1, invalid encoding --- */
+
 
 TEST_CASE("bounds encoding, internal exponent, L8 = 1", "[bounds]") {
     /* params are base, cursor, top */
