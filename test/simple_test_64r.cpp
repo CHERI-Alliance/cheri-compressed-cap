@@ -16,39 +16,39 @@ TEST_CASE("update ct", "[ct]") {
  * AP compression
  */
 
-TEST_CASE_M_AP_COMP(LVB_0, 0, CAP_AP_R, (CAP_AP_Q0 | 1))
-TEST_CASE_M_AP_COMP(LVB_0, 0, CAP_AP_W, (CAP_AP_Q0 | 4))
-TEST_CASE_M_AP_COMP(LVB_0, 0, CAP_AP_R | CAP_AP_W, (CAP_AP_Q0 | 5))
+TEST_CASE_M_AP_COMP(LVB_0, 0, CAP_AP_R, CAP_AP_Q0 | 1)
+TEST_CASE_M_AP_COMP(LVB_0, 0, CAP_AP_W, CAP_AP_Q0 | 4)
+TEST_CASE_M_AP_COMP(LVB_0, 0, CAP_AP_R | CAP_AP_W, CAP_AP_Q0 | 5)
 
 TEST_CASE_M_AP_COMP(LVB_0,
-        0, (CAP_AP_X | CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_LM | CAP_AP_ASR),
-        (CAP_AP_Q1 | 0))
+        0, CAP_AP_X | CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_LM | CAP_AP_ASR,
+        CAP_AP_Q1 | 0)
 TEST_CASE_M_AP_COMP(LVB_0,
-        1, (CAP_AP_X | CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_LM | CAP_AP_ASR),
-        (CAP_AP_Q1 | 1))
+        1, CAP_AP_X | CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_LM | CAP_AP_ASR,
+        CAP_AP_Q1 | 1)
 TEST_CASE_M_AP_COMP(LVB_0,
-        0, (CAP_AP_X | CAP_AP_R | CAP_AP_C | CAP_AP_LM),
-        (CAP_AP_Q1 | 2))
+        0, CAP_AP_X | CAP_AP_R | CAP_AP_C | CAP_AP_LM,
+        CAP_AP_Q1 | 2)
 TEST_CASE_M_AP_COMP(LVB_0,
-        1, (CAP_AP_X | CAP_AP_R | CAP_AP_C | CAP_AP_LM),
-        (CAP_AP_Q1 | 3))
+        1, CAP_AP_X | CAP_AP_R | CAP_AP_C | CAP_AP_LM,
+        CAP_AP_Q1 | 3)
 TEST_CASE_M_AP_COMP(LVB_0,
-        0, (CAP_AP_X | CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_LM),
-        (CAP_AP_Q1 | 4))
+        0, CAP_AP_X | CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_LM,
+        CAP_AP_Q1 | 4)
 TEST_CASE_M_AP_COMP(LVB_0,
-        1, (CAP_AP_X | CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_LM),
-        (CAP_AP_Q1 | 5))
+        1, CAP_AP_X | CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_LM,
+        CAP_AP_Q1 | 5)
 TEST_CASE_M_AP_COMP(LVB_0,
-        0, (CAP_AP_X | CAP_AP_R | CAP_AP_W),
-        (CAP_AP_Q1 | 6))
+        0, CAP_AP_X | CAP_AP_R | CAP_AP_W,
+        CAP_AP_Q1 | 6)
 TEST_CASE_M_AP_COMP(LVB_0,
-        1, (CAP_AP_X | CAP_AP_R | CAP_AP_W),
-        (CAP_AP_Q1 | 7))
+        1, CAP_AP_X | CAP_AP_R | CAP_AP_W,
+        CAP_AP_Q1 | 7)
 
-TEST_CASE_M_AP_COMP(LVB_0, 0, (CAP_AP_R | CAP_AP_C), (CAP_AP_Q2 | 3))
+TEST_CASE_M_AP_COMP(LVB_0, 0, CAP_AP_R | CAP_AP_C, CAP_AP_Q2 | 3)
 
-TEST_CASE_M_AP_COMP(LVB_0, 0, CAP_AP_LM | CAP_AP_C | CAP_AP_R, (CAP_AP_Q3 | 3))
-TEST_CASE_M_AP_COMP(LVB_0, 0, CAP_AP_LM | CAP_AP_C | CAP_AP_R | CAP_AP_W, (CAP_AP_Q3 | 7))
+TEST_CASE_M_AP_COMP(LVB_0, 0, CAP_AP_LM | CAP_AP_C | CAP_AP_R, CAP_AP_Q3 | 3)
+TEST_CASE_M_AP_COMP(LVB_0, 0, CAP_AP_LM | CAP_AP_C | CAP_AP_R | CAP_AP_W, CAP_AP_Q3 | 7)
 
 /* Invalid permissions must result in "no permissions". */
 TEST_CASE_M_AP_COMP(LVB_0, 0, CAP_AP_C, 0);
@@ -59,46 +59,46 @@ TEST_CASE_M_AP_COMP(LVB_0, 0, CAP_AP_C, 0);
 
 TEST_CASE_M_AP_DECOMP(CAP_AP_Q0 | 1, 0, CAP_AP_R)
 TEST_CASE_M_AP_DECOMP(CAP_AP_Q0 | 4, 0, CAP_AP_W)
-TEST_CASE_M_AP_DECOMP(CAP_AP_Q0 | 5, 0, (CAP_AP_R | CAP_AP_W))
+TEST_CASE_M_AP_DECOMP(CAP_AP_Q0 | 5, 0, CAP_AP_R | CAP_AP_W)
 /* invalid in Q0 -> no permissions */
 TEST_CASE_M_AP_DECOMP(CAP_AP_Q0 | 6, 0, 0)
 
 TEST_CASE_M_AP_DECOMP(
-        (CAP_AP_Q1 | 0),
-        0, (CAP_AP_X | CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_LM | CAP_AP_ASR))
+        CAP_AP_Q1 | 0,
+        0, CAP_AP_X | CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_LM | CAP_AP_ASR)
 TEST_CASE_M_AP_DECOMP(
-        (CAP_AP_Q1 | 1),
-        1, (CAP_AP_X | CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_LM | CAP_AP_ASR))
+        CAP_AP_Q1 | 1,
+        1, CAP_AP_X | CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_LM | CAP_AP_ASR)
 TEST_CASE_M_AP_DECOMP(
-        (CAP_AP_Q1 | 2),
-        0, (CAP_AP_X | CAP_AP_R | CAP_AP_C | CAP_AP_LM))
+        CAP_AP_Q1 | 2,
+        0, CAP_AP_X | CAP_AP_R | CAP_AP_C | CAP_AP_LM)
 TEST_CASE_M_AP_DECOMP(
-        (CAP_AP_Q1 | 3),
-        1, (CAP_AP_X | CAP_AP_R | CAP_AP_C | CAP_AP_LM))
+        CAP_AP_Q1 | 3,
+        1, CAP_AP_X | CAP_AP_R | CAP_AP_C | CAP_AP_LM)
 TEST_CASE_M_AP_DECOMP(
-        (CAP_AP_Q1 | 4),
-        0, (CAP_AP_X | CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_LM))
+        CAP_AP_Q1 | 4,
+        0, CAP_AP_X | CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_LM)
 TEST_CASE_M_AP_DECOMP(
-        (CAP_AP_Q1 | 5),
-        1, (CAP_AP_X | CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_LM))
+        CAP_AP_Q1 | 5,
+        1, CAP_AP_X | CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_LM)
 TEST_CASE_M_AP_DECOMP(
-        (CAP_AP_Q1 | 6),
-        0, (CAP_AP_X | CAP_AP_R | CAP_AP_W))
+        CAP_AP_Q1 | 6,
+        0, CAP_AP_X | CAP_AP_R | CAP_AP_W)
 TEST_CASE_M_AP_DECOMP(
-        (CAP_AP_Q1 | 7),
-        1, (CAP_AP_X | CAP_AP_R | CAP_AP_W))
+        CAP_AP_Q1 | 7,
+        1, CAP_AP_X | CAP_AP_R | CAP_AP_W)
 
-TEST_CASE_M_AP_DECOMP((CAP_AP_Q2 | 3),
-        0, (CAP_AP_R | CAP_AP_C))
+TEST_CASE_M_AP_DECOMP(CAP_AP_Q2 | 3,
+        0, CAP_AP_R | CAP_AP_C)
 /* invalid in Q2 -> all permissions (Q2 does not encode the M-bit) */
-TEST_CASE_M_AP_DECOMP((CAP_AP_Q2 | 2),
-        0, (CAP_AP_X | CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_LM | CAP_AP_ASR))
+TEST_CASE_M_AP_DECOMP(CAP_AP_Q2 | 2,
+        0, CAP_AP_X | CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_LM | CAP_AP_ASR)
 
-TEST_CASE_M_AP_DECOMP((CAP_AP_Q3 | 3), 0, CAP_AP_LM | CAP_AP_C | CAP_AP_R)
-TEST_CASE_M_AP_DECOMP((CAP_AP_Q3 | 7), 0, CAP_AP_LM | CAP_AP_C | CAP_AP_R | CAP_AP_W)
+TEST_CASE_M_AP_DECOMP(CAP_AP_Q3 | 3, 0, CAP_AP_LM | CAP_AP_C | CAP_AP_R)
+TEST_CASE_M_AP_DECOMP(CAP_AP_Q3 | 7, 0, CAP_AP_LM | CAP_AP_C | CAP_AP_R | CAP_AP_W)
 /* invalid in Q3 -> all permissions (Q3 does not encode the M-bit) */
-TEST_CASE_M_AP_DECOMP((CAP_AP_Q3 | 1),
-        0, (CAP_AP_X | CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_LM | CAP_AP_ASR))
+TEST_CASE_M_AP_DECOMP(CAP_AP_Q3 | 1,
+        0, CAP_AP_X | CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_LM | CAP_AP_ASR)
 
 TEST_CASE("bounds encoding, internal exponent, L8 = 1", "[bounds]") {
     /* params are base, cursor, top */
