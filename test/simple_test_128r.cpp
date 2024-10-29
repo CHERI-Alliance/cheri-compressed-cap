@@ -24,12 +24,12 @@ TEST_CASE_M_AP_COMP(0, CAP_AP_R, CAP_AP_R)
 
 TEST_CASE_M_AP_COMP(
         1, (CAP_AP_X | CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_ASR),
-        1 << 8 | (CAP_AP_X | CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_ASR))
+        1 << _CC_N(FIELD_AP_SIZE) | (CAP_AP_X | CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_ASR))
 
 /* M, AP decompression */
 
 TEST_CASE_M_AP_DECOMP(
-        1 << 8 | (CAP_AP_X | CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_ASR),
+        1 << _CC_N(FIELD_AP_SIZE) | (CAP_AP_X | CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_ASR),
         1, (CAP_AP_X | CAP_AP_R | CAP_AP_W | CAP_AP_C | CAP_AP_ASR))
 
 TEST_CASE_M_AP_DECOMP(
