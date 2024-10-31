@@ -1,6 +1,5 @@
 /*-
  * SPDX-License-Identifier: BSD-2-Clause
- * TODO: Is this license ok?
  *
  * Copyright (c) 2024 Codasip
  *
