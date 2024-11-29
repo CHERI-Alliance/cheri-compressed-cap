@@ -150,6 +150,7 @@ static inline uint32_t _cc_N(get_reserved)(const _cc_cap_t* cap);
 static inline uint32_t _cc_N(get_uperms)(const _cc_cap_t* cap);
 static inline uint8_t _cc_N(get_sdp)(const _cc_cap_t* cap);
 static inline uint8_t _cc_N(get_ct)(const _cc_cap_t* cap);
+static inline uint8_t _cc_N(get_cl)(const _cc_cap_t* cap);
 
 // In order to allow vector loads and store from memory we can optionally reverse the first two fields.
 struct _cc_N(cap) {
@@ -207,6 +208,13 @@ struct _cc_N(cap) {
          * _cc_N(decompress_mem). In thoses cases, we should be ok.
          */
         return cr_arch_perm;
+#endif
+    }
+    inline uint8_t global() const {
+#if _CC_N(FIELD_CL_USED)
+        return _cc_N(get_cl)(this);
+#else
+        return (permissions() & _CC_N(PERM_GLOBAL)) != 0;
 #endif
     }
     inline uint32_t type() const { return _cc_N(get_otype)(this); }
