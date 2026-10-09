@@ -953,11 +953,11 @@ static inline bool _cc_N(setbounds_impl)(_cc_cap_t* cap, _cc_length_t req_len, _
 
 /* @return whether the operation was able to set precise bounds precise or not */
 static inline bool _cc_N(setbounds)(_cc_cap_t* cap, _cc_length_t req_len) {
-    __attribute__((unused)) _cc_addr_t old_base = cap->cr_base;
-    __attribute__((unused)) _cc_length_t old_top = cap->_cr_top;
-    __attribute__((unused)) _cc_addr_t req_base =
+    _cc_maybe_unused _cc_addr_t old_base = cap->cr_base;
+    _cc_maybe_unused _cc_length_t old_top = cap->_cr_top;
+    _cc_maybe_unused _cc_addr_t req_base =
         _cc_N(cap_bounds_uses_value)(cap) ? _cc_N(cap_bounds_address)(cap->_cr_cursor) : cap->_cr_cursor;
-    __attribute__((unused)) _cc_length_t req_top = req_len + req_base;
+    _cc_maybe_unused _cc_length_t req_top = req_len + req_base;
     bool exact = _cc_N(setbounds_impl)(cap, req_len, NULL);
     if (cap->cr_tag) {
         // Assertions to check that we didn't break any invariants.
@@ -986,9 +986,9 @@ static inline bool _cc_N(setbounds)(_cc_cap_t* cap, _cc_length_t req_len) {
 
 /** Like setbounds, but also asserts that the operation is strictly monotonic. */
 static inline bool _cc_N(checked_setbounds)(_cc_cap_t* cap, _cc_length_t req_len) {
-    __attribute__((unused)) _cc_addr_t req_base =
+    _cc_maybe_unused _cc_addr_t req_base =
         _cc_N(cap_bounds_uses_value)(cap) ? _cc_N(cap_bounds_address)(cap->_cr_cursor) : cap->_cr_cursor;
-    __attribute__((unused)) _cc_length_t req_top = req_len + req_base;
+    _cc_maybe_unused _cc_length_t req_top = req_len + req_base;
     if (cap->cr_tag) {
         // Assertions to detect API misuse - those checks should have been performed before calling setbounds.
         _cc_api_requirement(!_cc_N(is_cap_sealed)(cap), "cannot be used on tagged sealed capabilities");
