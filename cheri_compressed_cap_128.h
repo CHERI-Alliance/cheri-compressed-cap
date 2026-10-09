@@ -57,7 +57,7 @@
 #define CC128_SPECIAL_OTYPE_VAL_SIGNED(subtract) (((int64_t)-1) - subtract##u)
 // ISAv9 always supports exactly one level bit (local/global).
 #define CC128_MANDATORY_LEVEL_BITS 1
-#define CC128_MAX_LEVEL_BITS CC64_MANDATORY_LEVEL_BITS
+#define CC128_MAX_LEVEL_BITS CC128_MANDATORY_LEVEL_BITS
 
 #include "cheri_compressed_cap_macros.h"
 typedef enum _CC_N(Mode) { _CC_N(MODE_CAP) = 1, _CC_N(MODE_INT) = 0 } _CC_N(Mode);

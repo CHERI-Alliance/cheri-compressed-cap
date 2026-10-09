@@ -79,7 +79,7 @@
 #define CC128M_SPECIAL_OTYPE_VAL_SIGNED(val) (val##u)
 // Morello always supports exactly one level bit (local/global).
 #define CC128M_MANDATORY_LEVEL_BITS 1
-#define CC128M_MAX_LEVEL_BITS CC64_MANDATORY_LEVEL_BITS
+#define CC128M_MAX_LEVEL_BITS CC128M_MANDATORY_LEVEL_BITS
 
 #include "cheri_compressed_cap_macros.h"
 
