@@ -159,7 +159,6 @@ _CC_STATIC_ASSERT_SAME(CC128R_MANTISSA_WIDTH, CC128R_FIELD_EXP_ZERO_BOTTOM_SIZE)
 #define CC128R_HAS_BASE_TOP_SPECIAL_CASES 1
 #define CC128R_USES_V9_CORRECTION_FACTORS 0
 #define CC128R_USES_LEN_MSB 0
-#define CC128R_MAX_LEVEL_BITS 1 // LVLBITS=2 not supported yet
 
 #include "cheri_compressed_cap_common.h"
 #include "cheri_compressed_cap_riscv_common.h"

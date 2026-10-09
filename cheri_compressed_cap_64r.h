@@ -160,7 +160,6 @@ _CC_STATIC_ASSERT_SAME(CC64R_MANTISSA_WIDTH, CC64R_FIELD_EXP_ZERO_BOTTOM_SIZE);
 #define CC64R_HAS_BASE_TOP_SPECIAL_CASES 1
 #define CC64R_USES_V9_CORRECTION_FACTORS 0
 #define CC64R_USES_LEN_MSB 1
-#define CC64R_MAX_LEVEL_BITS 1 // LVLBITS=2 not supported yet
 
 #include "cheri_compressed_cap_common.h"
 #include "cheri_compressed_cap_riscv_common.h"
