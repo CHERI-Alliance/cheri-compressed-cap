@@ -559,10 +559,7 @@ static inline bool _cc_N(pesbt_is_correct)(const _cc_cap_t* csp) {
     // NB: We use the unsafe decompression function here to handle non-derivable caps without asserting.
     _cc_N(unsafe_decompress_raw)(csp->cr_pesbt, csp->_cr_cursor, csp->cr_tag, _cc_N(get_lvbits)(csp), &tmp);
     tmp.cr_extra = csp->cr_extra; // raw_equal also compares, cr_extra but we don't care about that here.
-    if (!_cc_N(raw_equal)(&tmp, csp)) {
-        return false;
-    }
-    return true;
+    return _cc_N(raw_equal)(&tmp, csp);
 }
 
 // Update ebt bits in pesbt
@@ -602,10 +599,7 @@ static inline bool _cc_N(is_representable_cap_exact)(const _cc_cap_t* cap) {
     _cc_debug_assert(decompressed_cap._cr_cursor == cap->_cr_cursor);
     _cc_debug_assert(decompressed_cap.cr_pesbt == cap->cr_pesbt);
     // If any of these fields changed then the capability is not representable:
-    if (decompressed_cap.cr_base != cap->cr_base || decompressed_cap._cr_top != cap->_cr_top) {
-        return false;
-    }
-    return true;
+    return decompressed_cap.cr_base == cap->cr_base && decompressed_cap._cr_top == cap->_cr_top;
 }
 
 static inline uint32_t _cc_N(compute_ebt)(_cc_addr_t req_base, _cc_length_t req_top, _cc_addr_t* alignment_mask,
