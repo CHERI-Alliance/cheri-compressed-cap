@@ -319,16 +319,9 @@ static inline void _cc_N(update_level)(_cc_cap_t* cap, uint8_t level) {
 }
 #endif
 
-// These two split helpers exist for backwards compatibility with code that doesn't use the new functions
-static inline _cc_cap_t _cc_N(make_null_derived_cap)(_cc_addr_t addr);
+// These split helpers exist for backwards compatibility with code that doesn't use the new functions
 _CC_DEPRECATED("Use get_all_permissions") static inline _cc_addr_t _cc_N(get_perms)(const _cc_cap_t* cap) {
-    // We assume that HWPERMS always start at non-zero bit position
-    _CC_STATIC_ASSERT(_CC_N(UPERMS_SHFT) != 0, "Architectural perms expected to start at offset zero");
-    // We have to clear reserved one-bits for the 64r/128r formats (will be elided by compiler for other formats)
-    _cc_cap_t null_cap = _cc_N(make_null_derived_cap)(0);
-    _cc_addr_t reserved_one_bits = _cc_N(get_all_permissions)(&null_cap);
-    _cc_addr_t all_perms_w_reserved = _cc_N(get_all_permissions)(cap);
-    return (all_perms_w_reserved & ~reserved_one_bits) & ~_CC_N(PERM_SW_ALL);
+    return _cc_N(get_all_permissions)(cap) & _CC_N(PERMS_ALL);
 }
 _CC_DEPRECATED("Use get_all_permissions") static inline _cc_addr_t _cc_N(get_uperms)(const _cc_cap_t* cap) {
     return (_cc_N(get_all_permissions)(cap) & _CC_N(PERM_SW_ALL)) >> _CC_N(UPERMS_SHFT);
