@@ -91,8 +91,6 @@ enum {
     _CC_FIELD(EXPONENT_FORMAT, 90, 90),
     // The FIELD_INTERNAL_EXPONENT_SIZE name is currently required by various static assertions.
     _CC_N(FIELD_INTERNAL_EXPONENT_SIZE) = _CC_N(FIELD_EXPONENT_FORMAT_SIZE),
-    _CC_FIELD(TOP_ENCODED, 89, 78),
-    _CC_FIELD(BOTTOM_ENCODED, 77, 64),
 
     // Top/bottom offsets depending on INTERNAL_EXPONENT flag:
     // Without internal exponent:
