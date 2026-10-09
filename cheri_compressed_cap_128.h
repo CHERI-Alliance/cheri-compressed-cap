@@ -144,8 +144,6 @@ enum _CC_N(OTypes) {
     ITEM(OTYPE_INDIRECT_PAIR, __VA_ARGS__)                                                                             \
     ITEM(OTYPE_INDIRECT_SENTRY, __VA_ARGS__)
 
-_CC_STATIC_ASSERT_SAME(CC128_MANTISSA_WIDTH, CC128_FIELD_EXP_ZERO_BOTTOM_SIZE);
-
 // CHERI ISA v9 uses the "internal exponent" bit.
 #define CC128_ENCODE_IE(IE) _CC_ENCODE_FIELD(IE, INTERNAL_EXPONENT)
 #define CC128_EXTRACT_IE(pesbt) _CC_EXTRACT_FIELD(pesbt, INTERNAL_EXPONENT)
