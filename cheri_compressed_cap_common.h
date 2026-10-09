@@ -104,6 +104,7 @@ enum { _CC_N(FIELD_LEN_MSB_SIZE) = 0 };
 #endif
 
 // Check that the sizes of the individual fields match up
+_CC_STATIC_ASSERT_SAME(_CC_MANTISSA_WIDTH, _CC_N(FIELD_EXP_ZERO_BOTTOM_SIZE));
 _CC_STATIC_ASSERT_SAME(_CC_N(PERMS_ALL) & _CC_N(PERM_SW_ALL), 0);
 _CC_STATIC_ASSERT_SAME(_CC_N(PERMS_ALL) | _CC_N(PERM_SW_ALL), _CC_N(PERMS_MASK));
 _CC_STATIC_ASSERT_SAME(_CC_N(FIELD_INTERNAL_EXPONENT_SIZE) + _CC_N(FIELD_EXP_ZERO_TOP_SIZE) +
@@ -344,7 +345,6 @@ _CC_DEPRECATED("Use set_permissions") static inline void _cc_N(update_uperms)(_c
 
 /// Extract the bits used for bounds and infer the top two bits of T
 static inline _cc_bounds_bits _cc_N(extract_bounds_bits)(_cc_addr_t pesbt) {
-    _CC_STATIC_ASSERT(_CC_MANTISSA_WIDTH == _CC_N(BOT_WIDTH), "Wrong bot width?");
     uint32_t BWidth = _CC_MANTISSA_WIDTH;
     uint32_t BMask = (1u << BWidth) - 1;
     uint32_t TMask = BMask >> 2;

@@ -175,8 +175,6 @@ enum _CC_N(OTypes) {
     ITEM(OTYPE_LOAD_PAIR_BRANCH, __VA_ARGS__)                                                                          \
     ITEM(OTYPE_LOAD_BRANCH, __VA_ARGS__)
 
-_CC_STATIC_ASSERT_SAME(CC128M_MANTISSA_WIDTH, CC128M_FIELD_EXP_ZERO_BOTTOM_SIZE);
-
 // Morello uses an "exponent zero" flag instead of "internal exponent".
 #define CC128M_ENCODE_IE(value) _CC_ENCODE_FIELD(!(value), EXPONENT_ZERO)
 #define CC128M_EXTRACT_IE(pesbt) (!_CC_EXTRACT_FIELD(pesbt, EXPONENT_ZERO))

@@ -147,8 +147,6 @@ enum _CC_N(OTypes) {
     ITEM(OTYPE_UNSEALED, __VA_ARGS__)                                                                                  \
     ITEM(OTYPE_SENTRY, __VA_ARGS__)
 
-_CC_STATIC_ASSERT_SAME(CC128R_MANTISSA_WIDTH, CC128R_FIELD_EXP_ZERO_BOTTOM_SIZE);
-
 // The RISC-V extension uses an "exponent zero" flag.
 #define CC128R_ENCODE_IE(IE) _CC_ENCODE_FIELD(!(IE), EXPONENT_FORMAT)
 #define CC128R_EXTRACT_IE(value) (!_CC_EXTRACT_FIELD(value, EXPONENT_FORMAT))
