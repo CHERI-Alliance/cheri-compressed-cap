@@ -76,12 +76,10 @@ enum {
     _CC_FIELD(AP_M, 116, 108), // Combined architectural permissions and mode
     _CC_FIELD(AP, 116, 109),
     _CC_FIELD(MODE, 108, 108),
-    _CC_FIELD(FLAGS, 108, 108), // TODO: remove this old alias
 #else
     _CC_FIELD(RESERVED1, 127, 121),
     _CC_FIELD(SDP, 120, 117),
-    _CC_FIELD(FLAGS, 116, 116), // TODO: remove this old alias
-    _CC_FIELD(AP_M, 116, 108),  // Combined architectural permissions and mode
+    _CC_FIELD(AP_M, 116, 108), // Combined architectural permissions and mode
     _CC_FIELD(MODE, 116, 116),
     _CC_FIELD(AP, 115, 108),
 #endif

@@ -34,6 +34,7 @@
  * SUCH DAMAGE.
  */
 // This file defines the 64-bit CHERI compressed capability format for the CHERI ISA version 9.
+#define CC_IS_V9
 
 #define CC_FORMAT_LOWER 128
 #define CC_FORMAT_UPPER 128
@@ -181,5 +182,6 @@ decompress_128cap(uint64_t pesbt, uint64_t cursor, _cc_cap_t* cdp) {
     cc128_decompress_mem(pesbt, cursor, cdp->cr_tag, cdp);
 }
 
+#undef CC_IS_V9
 #undef CC_FORMAT_LOWER
 #undef CC_FORMAT_UPPER

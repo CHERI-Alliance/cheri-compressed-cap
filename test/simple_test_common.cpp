@@ -57,7 +57,9 @@ TEST_CASE("Zeroes decode to NULL cap", "[nullcap]") {
     CHECK_FIELD(result, offset, 0);
     CHECK_FIELD(result, software_permissions, 0);
     CHECK_FIELD(result, permissions, 0);
-    CHECK_FIELD(result, flags, 0);
+#ifndef TEST_CC_IS_MORELLO
+    CHECK_FIELD(result, execution_mode, 0);
+#endif
     CHECK_FIELD(result, reserved_bits, 0);
     CHECK((result.cr_pesbt & _CC_N(FIELD_EBT_MASK64)) == (_CC_N(NULL_PESBT) & _CC_N(FIELD_EBT_MASK64)));
     CHECK_FIELD_RAW(result.length(), _CC_N(NULL_LENGTH));
