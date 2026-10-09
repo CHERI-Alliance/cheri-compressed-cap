@@ -280,10 +280,8 @@ static inline uint64_t _cc_N(truncate64)(uint64_t value, size_t n) { return valu
         return value >> (type_width - n);                                                                              \
     }
 TRUNCATE_LSB_FUNC(_CC_MANTISSA_WIDTH)
-TRUNCATE_LSB_FUNC(32)
-TRUNCATE_LSB_FUNC(64)
+#undef TRUNCATE_LSB_FUNC
 
-#define _cc_truncateLSB_generic(type_width) _CC_CONCAT(_cc_N(truncateLSB_), _CC_EXPAND(type_width))
 #define _cc_truncateLSB(type_width) _cc_N(_CC_CONCAT(truncateLSB_, type_width))
 
 struct _cc_N(bounds_bits) {
