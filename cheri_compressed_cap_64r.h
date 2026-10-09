@@ -84,8 +84,6 @@ enum {
     _CC_FIELD(LEN_MSB, 50, 50), // Either MSB of exponent or MSB of length depending on EXPONENT_FORMAT.
     // The FIELD_INTERNAL_EXPONENT_SIZE name is currently required by various static assertions.
     _CC_N(FIELD_INTERNAL_EXPONENT_SIZE) = _CC_N(FIELD_EXPONENT_FORMAT_SIZE),
-    _CC_FIELD(TOP_ENCODED, 49, 42),
-    _CC_FIELD(BOTTOM_ENCODED, 41, 32),
 
     // Top/bottom offsets depending on INTERNAL_EXPONENT flag:
     // Without internal exponent:

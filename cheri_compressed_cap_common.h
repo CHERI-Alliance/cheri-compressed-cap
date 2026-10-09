@@ -110,9 +110,6 @@ _CC_STATIC_ASSERT_SAME(_CC_N(PERMS_ALL) | _CC_N(PERM_SW_ALL), _CC_N(PERMS_MASK))
 _CC_STATIC_ASSERT_SAME(_CC_N(FIELD_INTERNAL_EXPONENT_SIZE) + _CC_N(FIELD_EXP_ZERO_TOP_SIZE) +
                            _CC_N(FIELD_LEN_MSB_SIZE) + _CC_N(FIELD_EXP_ZERO_BOTTOM_SIZE),
                        _CC_N(FIELD_EBT_SIZE));
-_CC_STATIC_ASSERT_SAME(_CC_N(FIELD_INTERNAL_EXPONENT_SIZE) + _CC_N(FIELD_LEN_MSB_SIZE) + _CC_N(FIELD_TOP_ENCODED_SIZE) +
-                           _CC_N(FIELD_BOTTOM_ENCODED_SIZE),
-                       _CC_N(FIELD_EBT_SIZE));
 _CC_STATIC_ASSERT_SAME(_CC_N(FIELD_INTERNAL_EXPONENT_SIZE) + _CC_N(FIELD_LEN_MSB_SIZE) +
                            _CC_N(FIELD_EXP_NONZERO_TOP_SIZE) + _CC_N(FIELD_EXP_NONZERO_BOTTOM_SIZE) +
                            _CC_N(FIELD_EXPONENT_HIGH_PART_SIZE) + _CC_N(FIELD_EXPONENT_LOW_PART_SIZE),
@@ -759,7 +756,7 @@ static inline bool _cc_N(_precise_is_representable_new_addr)(const _cc_cap_t* ol
 }
 
 static inline bool _cc_N(cap_bounds_uses_value_for_exp)(uint8_t exponent) {
-    return exponent < (sizeof(_cc_addr_t) * 8) - _CC_N(FIELD_BOTTOM_ENCODED_SIZE);
+    return exponent < (sizeof(_cc_addr_t) * 8) - _CC_MANTISSA_WIDTH;
 }
 
 /// Returns whether the capability bounds depend on any of the cursor bits or if they can be fully derived from E/B/T.
