@@ -1054,11 +1054,11 @@ static inline _cc_addr_t _cc_N(get_alignment_mask)(_cc_addr_t req_length) {
         // This avoids undefined behaviour when counting most significant bit later.
         return _CC_MAX_ADDR;
     }
-    // To compute the mask we set bounds on a maximum permissions capability and
-    // return the mask that was used to adjust the length
-    _cc_cap_t tmpcap = _cc_N(make_max_perms_cap(0, 0, _CC_MAX_TOP));
+    // To compute the mask we compute the EBT for a capability with base=0 and
+    // top=req_length and return the mask that was used to adjust the length.
     _cc_addr_t mask = 0;
-    _cc_N(setbounds_impl)(&tmpcap, req_length, &mask);
+    bool exact = false;
+    (void)_cc_N(compute_ebt)(0, req_length, &mask, &exact);
     return mask;
 }
 
