@@ -34,6 +34,7 @@
  * SUCH DAMAGE.
  */
 // This file defines the 32-bit CHERI compressed capability format for the CHERI ISA version 9.
+#define CC_IS_V9
 
 #define CC_FORMAT_LOWER 64
 #define CC_FORMAT_UPPER 64
@@ -151,5 +152,6 @@ _CC_STATIC_ASSERT_SAME(CC64_MANTISSA_WIDTH, CC64_FIELD_EXP_ZERO_BOTTOM_SIZE);
 // Sanity-check mask is the expected NULL encoding
 _CC_STATIC_ASSERT_SAME(CC64_MEM_XOR_MASK, UINT32_C(0x7c302));
 
+#undef CC_IS_V9
 #undef CC_FORMAT_LOWER
 #undef CC_FORMAT_UPPER

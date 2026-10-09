@@ -72,9 +72,8 @@ typedef enum _CC_N(Mode) { _CC_N(MODE_CAP) = 0, _CC_N(MODE_INT) = 1 } _CC_N(Mode
 #pragma GCC diagnostic ignored "-Wpedantic"
 enum {
     _CC_FIELD(SDP, 63, 62),
-    _CC_FIELD(AP_M, 61, 57),  // combined architectural permissions and mode
-    _CC_FIELD(MODE, 57, 57),  // Only valid if AP_M grant execute (quadrant 1)
-    _CC_FIELD(FLAGS, 57, 57), // TODO: remove this field
+    _CC_FIELD(AP_M, 61, 57), // combined architectural permissions and mode
+    _CC_FIELD(MODE, 57, 57), // Only valid if AP_M grant execute (quadrant 1)
     _CC_FIELD(LEVEL, 56, 56),
     _CC_FIELD(RESERVED1, 55, 55),
     _CC_FIELD(RESERVED0, 54, 53),

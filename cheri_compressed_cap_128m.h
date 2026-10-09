@@ -93,11 +93,7 @@ enum {
     _CC_FIELD(UPERMS, 115, 112),
     _CC_FIELD(OTYPE, 109, 95),
     _CC_FIELD(EBT, 94, 64),
-// This is a bit dodgy. This enum only really works for non-address bits.
-// Just provide nonsense values that will make the length of the range 0.
-// Should really be `_CC_FIELD(FLAGS, 63, 56)', if this stuff applied to the address
 #define MORELLO_FLAG_BITS 8
-    _CC_FIELD(FLAGS, 64, 65),
 
     _CC_FIELD(EXPONENT_ZERO, 94, 94),
     // The FIELD_INTERNAL_EXPONENT_SIZE name is currently required by various static assertions.

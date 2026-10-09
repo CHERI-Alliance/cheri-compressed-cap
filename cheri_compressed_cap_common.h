@@ -128,7 +128,9 @@ _CC_STATIC_ASSERT(_CC_N(MAX_RESERVED_OTYPE) <= _CC_N(MAX_REPRESENTABLE_OTYPE), "
 // Forward-declare the accessors since we use them inside the struct body:
 typedef struct _cc_N(cap) _cc_N(cap_t);
 #define _cc_cap_t _cc_N(cap_t)
+#ifdef CC_IS_V9
 static inline uint8_t _cc_N(get_flags)(const _cc_cap_t* cap);
+#endif
 static inline uint32_t _cc_N(get_otype)(const _cc_cap_t* cap);
 static inline uint32_t _cc_N(get_level)(const _cc_cap_t* cap);
 static inline _cc_addr_t _cc_N(get_perms)(const _cc_cap_t* cap);
@@ -189,7 +191,12 @@ struct _cc_N(cap) {
     inline uint32_t level() const { return _cc_N(get_level)(this); }
     inline bool is_sealed() const { return type() != _CC_N(OTYPE_UNSEALED); }
     inline _cc_addr_t reserved_bits() const { return _cc_N(get_reserved)(this); }
+#ifndef CC_IS_MORELLO
+    inline _cc_mode execution_mode() const { return _cc_N(get_execution_mode)(this); }
+#endif
+#ifdef CC_IS_V9
     inline uint8_t flags() const { return _cc_N(get_flags)(this); }
+#endif
     inline bool operator==(const _cc_N(cap) & other) const;
 #endif
 };
@@ -286,7 +293,7 @@ struct _cc_N(bounds_bits) {
 };
 #define _cc_bounds_bits struct _cc_N(bounds_bits)
 
-#define ALL_WRAPPERS(X, FN, type)                                                                                      \
+#define _CC_DEFINE_PESBT_EXTRACT_DEPOSIT_WRAPPERS(X, FN, type)                                                         \
     static inline _cc_addr_t _cc_N(cap_pesbt_extract_##FN)(_cc_addr_t pesbt) { return _CC_EXTRACT_FIELD(pesbt, X); }   \
     static inline _cc_addr_t _cc_N(cap_pesbt_encode_##FN)(type value) { return _CC_ENCODE_FIELD(value, X); }           \
     static inline _cc_addr_t _cc_N(cap_pesbt_deposit_##FN)(_cc_addr_t pesbt, type value) {                             \
@@ -296,9 +303,7 @@ struct _cc_N(bounds_bits) {
     static inline void _cc_N(update_##FN)(_cc_cap_t * cap, _cc_addr_t value) {                                         \
         cap->cr_pesbt = _cc_N(cap_pesbt_deposit_##FN)(cap->cr_pesbt, value);                                           \
     }
-ALL_WRAPPERS(OTYPE, otype, uint32_t)
-ALL_WRAPPERS(FLAGS, flags, uint8_t)
-#undef ALL_WRAPPERS
+_CC_DEFINE_PESBT_EXTRACT_DEPOSIT_WRAPPERS(OTYPE, otype, uint32_t)
 
 static inline bool _cc_N(is_cap_sealed)(const _cc_cap_t* cp) { return _cc_N(get_otype)(cp) != _CC_N(OTYPE_UNSEALED); }
 
