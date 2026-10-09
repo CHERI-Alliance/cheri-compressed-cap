@@ -35,33 +35,33 @@
  * SUCH DAMAGE.
  */
 
-// CHERI compressed capability format for the RISC-V standard
+// Legacy 128-bit CHERI compressed capability format for the RISC-V standard v0.9.3-v0.9.8
 
 // The following macros are expected to be defined
-#define CC_FORMAT_LOWER 128r
-#define CC_FORMAT_UPPER 128R
-#define CC128R_CAP_SIZE 16
-#define CC128R_CAP_BITS 128
-#define CC128R_ADDR_WIDTH 64
-#define CC128R_LEN_WIDTH 65
+#define CC_FORMAT_LOWER 128r093
+#define CC_FORMAT_UPPER 128R093
+#define CC128R093_CAP_SIZE 16
+#define CC128R093_CAP_BITS 128
+#define CC128R093_ADDR_WIDTH 64
+#define CC128R093_LEN_WIDTH 65
 
-#define CC128R_MANTISSA_WIDTH 14
+#define CC128R093_MANTISSA_WIDTH 14
 // Max exponent is the largest exponent _required_, not that can be encoded.
-#define CC128R_MAX_EXPONENT 52
-#define CC128R_CURSOR_MASK 0xFFFFFFFFFFFFFFFF
-#define CC128R_MAX_ADDRESS_PLUS_ONE ((cc128r_length_t)1u << CC128R_ADDR_WIDTH)
-#define CC128R_NULL_TOP CC128R_MAX_ADDRESS_PLUS_ONE
-#define CC128R_NULL_LENGTH CC128R_MAX_ADDRESS_PLUS_ONE
-#define CC128R_MAX_LENGTH CC128R_MAX_ADDRESS_PLUS_ONE
-#define CC128R_MAX_TOP CC128R_MAX_ADDRESS_PLUS_ONE
-#define CC128R_MAX_ADDR UINT64_MAX
+#define CC128R093_MAX_EXPONENT 52
+#define CC128R093_CURSOR_MASK 0xFFFFFFFFFFFFFFFF
+#define CC128R093_MAX_ADDRESS_PLUS_ONE ((cc128r093_length_t)1u << CC128R093_ADDR_WIDTH)
+#define CC128R093_NULL_TOP CC128R093_MAX_ADDRESS_PLUS_ONE
+#define CC128R093_NULL_LENGTH CC128R093_MAX_ADDRESS_PLUS_ONE
+#define CC128R093_MAX_LENGTH CC128R093_MAX_ADDRESS_PLUS_ONE
+#define CC128R093_MAX_TOP CC128R093_MAX_ADDRESS_PLUS_ONE
+#define CC128R093_MAX_ADDR UINT64_MAX
 /* Special otypes are allocated upwards from 0 */
-#define CC128R_SPECIAL_OTYPE_VAL(val) (val##u)
-#define CC128R_SPECIAL_OTYPE_VAL_SIGNED(val) (val##u)
+#define CC128R093_SPECIAL_OTYPE_VAL(val) (val##u)
+#define CC128R093_SPECIAL_OTYPE_VAL_SIGNED(val) (val##u)
 // Levels support depend on Zcherilevels extension. When not supported we have zero level bits.
-#define CC128R_MANDATORY_LEVEL_BITS 0
+#define CC128R093_MANDATORY_LEVEL_BITS 0
 // The encoding allows for many levels, but the current implementation is limited to one level bit.
-#define CC128R_MAX_LEVEL_BITS 1
+#define CC128R093_MAX_LEVEL_BITS 1
 
 #include "cheri_compressed_cap_macros.h"
 typedef enum _CC_N(Mode) { _CC_N(MODE_CAP) = 0, _CC_N(MODE_INT) = 1 } _CC_N(Mode);
@@ -70,11 +70,11 @@ typedef enum _CC_N(Mode) { _CC_N(MODE_CAP) = 0, _CC_N(MODE_INT) = 1 } _CC_N(Mode
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wpedantic"
 enum {
-    _CC_FIELD(SDP, 127, 124),
-    _CC_FIELD(RESERVED1, 123, 117),
+    _CC_FIELD(RESERVED1, 127, 121),
+    _CC_FIELD(SDP, 120, 117),
     _CC_FIELD(AP_M, 116, 108), // Combined architectural permissions and mode
-    _CC_FIELD(AP, 116, 109),
-    _CC_FIELD(MODE, 108, 108),
+    _CC_FIELD(MODE, 116, 116),
+    _CC_FIELD(AP, 115, 108),
     _CC_FIELD(LEVEL, 107, 107),
     _CC_FIELD(RESERVED0, 106, 92),
     _CC_FIELD(OTYPE, 91, 91),
@@ -96,54 +96,54 @@ enum {
 };
 #pragma GCC diagnostic pop
 
-#define CC128R_OTYPE_BITS CC128R_FIELD_OTYPE_SIZE
+#define CC128R093_OTYPE_BITS CC128R093_FIELD_OTYPE_SIZE
 
-#define CC128R_PERM_WRITE (1 << 0)
-#define CC128R_PERM_LOAD_MUTABLE (1 << 1)
-#define CC128R_PERM_ELEVATE_LEVEL (1 << 2)
-#define CC128R_PERM_STORE_LEVEL (1 << 3)
-#define CC128R_PERM_LEVEL (1 << 4)
-#define CC128R_PERM_CAPABILITY (1 << 5)
+#define CC128R093_PERM_WRITE (1 << 0)
+#define CC128R093_PERM_LOAD_MUTABLE (1 << 1)
+#define CC128R093_PERM_ELEVATE_LEVEL (1 << 2)
+#define CC128R093_PERM_STORE_LEVEL (1 << 3)
+#define CC128R093_PERM_LEVEL (1 << 4)
+#define CC128R093_PERM_CAPABILITY (1 << 5)
 // Software permissions start at bit 6
-#define CC128R_UPERMS_ALL (0xf) /* 4 bits */
-#define CC128R_UPERMS_SHFT (6)
-#define CC128R_PERM_SW_ALL (CC128R_UPERMS_ALL << CC128R_UPERMS_SHFT)
-#define CC128R_PERM_ACCESS_SYS_REGS (1 << 16)
-#define CC128R_PERM_EXECUTE (1 << 17)
-#define CC128R_PERM_READ (1 << 18)
-#define CC128R_PERMS_ALL (0x7003f)
+#define CC128R093_UPERMS_ALL (0xf) /* 4 bits */
+#define CC128R093_UPERMS_SHFT (6)
+#define CC128R093_PERM_SW_ALL (CC128R093_UPERMS_ALL << CC128R093_UPERMS_SHFT)
+#define CC128R093_PERM_ACCESS_SYS_REGS (1 << 16)
+#define CC128R093_PERM_EXECUTE (1 << 17)
+#define CC128R093_PERM_READ (1 << 18)
+#define CC128R093_PERMS_ALL (0x7003f)
 
-_CC_STATIC_ASSERT_SAME(CC128R_UPERMS_ALL, CC128R_FIELD_SDP_MAX_VALUE);
+_CC_STATIC_ASSERT_SAME(CC128R093_UPERMS_ALL, CC128R093_FIELD_SDP_MAX_VALUE);
 // Encoded value is 0b00111111 since SL and EL are not supported in sail yet.
-#define CC128R_ENCODED_INFINITE_PERMS(lvbits)                                                                          \
-    (_CC_ENCODE_FIELD(CC128R_UPERMS_ALL, SDP) | _CC_ENCODE_FIELD(lvbits == 0 ? 0x3f : 0xff, AP) |                      \
+#define CC128R093_ENCODED_INFINITE_PERMS(lvbits)                                                                       \
+    (_CC_ENCODE_FIELD(CC128R093_UPERMS_ALL, SDP) | _CC_ENCODE_FIELD(lvbits == 0 ? 0x3f : 0xff, AP) |                   \
      _CC_ENCODE_FIELD(_CC_BITMASK64(lvbits), LEVEL) | _CC_ENCODE_FIELD(1, MODE))
-#define CC128R_PERMS_MASK (CC128R_PERMS_ALL | CC128R_PERM_SW_ALL)
+#define CC128R093_PERMS_MASK (CC128R093_PERMS_ALL | CC128R093_PERM_SW_ALL)
 
 // Currently, only one type (sentry) is defined.
 // However, other extensions (e.g. CHERIoT) define additional otypes beyond this.
 enum _CC_N(OTypes) {
-    CC128R_MAX_REPRESENTABLE_OTYPE = ((1u << CC128R_OTYPE_BITS) - 1u),
+    CC128R093_MAX_REPRESENTABLE_OTYPE = ((1u << CC128R093_OTYPE_BITS) - 1u),
     _CC_SPECIAL_OTYPE(OTYPE_UNSEALED, 0),
     _CC_SPECIAL_OTYPE(OTYPE_SENTRY, 1),
     _CC_N(MIN_RESERVED_OTYPE) = _CC_N(OTYPE_UNSEALED),
     _CC_N(MAX_RESERVED_OTYPE) = _CC_N(OTYPE_SENTRY),
 };
 
-#define CC128R_LS_SPECIAL_OTYPES(ITEM, ...)                                                                            \
+#define CC128R093_LS_SPECIAL_OTYPES(ITEM, ...)                                                                         \
     ITEM(OTYPE_UNSEALED, __VA_ARGS__)                                                                                  \
     ITEM(OTYPE_SENTRY, __VA_ARGS__)
 
 // The RISC-V extension uses an "exponent zero" flag.
-#define CC128R_ENCODE_IE(IE) _CC_ENCODE_FIELD(!(IE), EXPONENT_FORMAT)
-#define CC128R_EXTRACT_IE(value) (!_CC_EXTRACT_FIELD(value, EXPONENT_FORMAT))
+#define CC128R093_ENCODE_IE(IE) _CC_ENCODE_FIELD(!(IE), EXPONENT_FORMAT)
+#define CC128R093_EXTRACT_IE(value) (!_CC_EXTRACT_FIELD(value, EXPONENT_FORMAT))
 // The exponent bits in memory are subtracted from the max exponent when decoding in the IE case.
-#define CC128R_ENCODE_EXPONENT(E) _CC_ENCODE_SPLIT_EXPONENT(CC128R_MAX_EXPONENT - (E))
-#define CC128R_EXTRACT_EXPONENT(pesbt) (CC128R_MAX_EXPONENT - _CC_EXTRACT_SPLIT_EXPONENT(pesbt))
-#define CC128R_RESERVED_BITS (CC128R_FIELD_RESERVED0_SIZE + CC128R_FIELD_RESERVED1_SIZE)
-#define CC128R_HAS_BASE_TOP_SPECIAL_CASES 1
-#define CC128R_USES_V9_CORRECTION_FACTORS 0
-#define CC128R_USES_LEN_MSB 0
+#define CC128R093_ENCODE_EXPONENT(E) _CC_ENCODE_SPLIT_EXPONENT(CC128R093_MAX_EXPONENT - (E))
+#define CC128R093_EXTRACT_EXPONENT(pesbt) (CC128R093_MAX_EXPONENT - _CC_EXTRACT_SPLIT_EXPONENT(pesbt))
+#define CC128R093_RESERVED_BITS (CC128R093_FIELD_RESERVED0_SIZE + CC128R093_FIELD_RESERVED1_SIZE)
+#define CC128R093_HAS_BASE_TOP_SPECIAL_CASES 1
+#define CC128R093_USES_V9_CORRECTION_FACTORS 0
+#define CC128R093_USES_LEN_MSB 0
 
 #include "cheri_compressed_cap_common.h"
 #include "cheri_compressed_cap_riscv_common.h"
@@ -155,27 +155,27 @@ static inline _cc_addr_t _cc_N(get_all_permissions)(const _cc_cap_t* cap) {
     _cc_addr_t result = sw_perms << _CC_N(UPERMS_SHFT);
     // See "Encoding of architectural permissions for MXLEN=64" in the spec
     if (arch_perms & _CC_BIT64(0))
-        result |= CC128R_PERM_CAPABILITY;
+        result |= CC128R093_PERM_CAPABILITY;
     if (arch_perms & _CC_BIT64(1))
-        result |= CC128R_PERM_WRITE;
+        result |= CC128R093_PERM_WRITE;
     if (arch_perms & _CC_BIT64(2))
-        result |= CC128R_PERM_READ;
+        result |= CC128R093_PERM_READ;
     if (arch_perms & _CC_BIT64(3))
-        result |= CC128R_PERM_EXECUTE;
+        result |= CC128R093_PERM_EXECUTE;
     if (arch_perms & _CC_BIT64(4))
-        result |= CC128R_PERM_ACCESS_SYS_REGS;
+        result |= CC128R093_PERM_ACCESS_SYS_REGS;
     if (arch_perms & _CC_BIT64(5))
-        result |= CC128R_PERM_LOAD_MUTABLE;
+        result |= CC128R093_PERM_LOAD_MUTABLE;
     if (cap->cr_lvbits > 0) {
         if (arch_perms & _CC_BIT64(6))
-            result |= CC128R_PERM_ELEVATE_LEVEL;
+            result |= CC128R093_PERM_ELEVATE_LEVEL;
         if (arch_perms & _CC_BIT64(7))
-            result |= CC128R_PERM_STORE_LEVEL;
+            result |= CC128R093_PERM_STORE_LEVEL;
         if (_CC_EXTRACT_FIELD(cap->cr_pesbt, LEVEL))
-            result |= CC128R_PERM_LEVEL;
+            result |= CC128R093_PERM_LEVEL;
     } else {
         // Levels extension not supported -> treat as reserved one-bits.
-        result |= CC128R_PERM_LEVEL | CC128R_PERM_STORE_LEVEL | CC128R_PERM_ELEVATE_LEVEL;
+        result |= CC128R093_PERM_LEVEL | CC128R093_PERM_STORE_LEVEL | CC128R093_PERM_ELEVATE_LEVEL;
     }
     result |= _CC_N(PERMS_RESERVED_ONES); // Finally include the hardcoded one-bits
     return result;
@@ -189,29 +189,29 @@ static inline bool _cc_N(set_permissions)(_cc_cap_t* cap, _cc_addr_t permissions
     _cc_mode mode = (_cc_mode)_CC_EXTRACT_FIELD(cap->cr_pesbt, MODE);
     // See "Encoding of architectural permissions for MXLEN=64" in the spec
     _cc_addr_t result = 0;
-    if (permissions & CC128R_PERM_CAPABILITY)
+    if (permissions & CC128R093_PERM_CAPABILITY)
         result |= _CC_BIT64(0);
-    if (permissions & CC128R_PERM_WRITE)
+    if (permissions & CC128R093_PERM_WRITE)
         result |= _CC_BIT64(1);
-    if (permissions & CC128R_PERM_READ)
+    if (permissions & CC128R093_PERM_READ)
         result |= _CC_BIT64(2);
-    if (permissions & CC128R_PERM_EXECUTE)
+    if (permissions & CC128R093_PERM_EXECUTE)
         result |= _CC_BIT64(3);
-    if (permissions & CC128R_PERM_ACCESS_SYS_REGS)
+    if (permissions & CC128R093_PERM_ACCESS_SYS_REGS)
         result |= _CC_BIT64(4);
-    if (permissions & CC128R_PERM_LOAD_MUTABLE)
+    if (permissions & CC128R093_PERM_LOAD_MUTABLE)
         result |= _CC_BIT64(5);
     if (cap->cr_lvbits > 0) {
-        if (permissions & CC128R_PERM_ELEVATE_LEVEL)
+        if (permissions & CC128R093_PERM_ELEVATE_LEVEL)
             result |= _CC_BIT64(6);
-        if (permissions & CC128R_PERM_STORE_LEVEL)
+        if (permissions & CC128R093_PERM_STORE_LEVEL)
             result |= _CC_BIT64(7);
-        unsigned new_level = permissions & CC128R_PERM_LEVEL ? 1 : 0;
+        unsigned new_level = permissions & CC128R093_PERM_LEVEL ? 1 : 0;
         cap->cr_pesbt = _CC_DEPOSIT_FIELD(cap->cr_pesbt, new_level, LEVEL);
     }
     cap->cr_pesbt = _CC_DEPOSIT_FIELD(cap->cr_pesbt, result, AP);
     cap->cr_pesbt = _CC_DEPOSIT_FIELD(cap->cr_pesbt, sw_perms, SDP);
-    if ((permissions & CC128R_PERM_EXECUTE) == 0 && mode == _CC_N(MODE_INT)) {
+    if ((permissions & CC128R093_PERM_EXECUTE) == 0 && mode == _CC_N(MODE_INT)) {
         cap->cr_pesbt = _CC_DEPOSIT_FIELD(cap->cr_pesbt, (unsigned)_CC_N(MODE_CAP), MODE);
         return false;
     }
