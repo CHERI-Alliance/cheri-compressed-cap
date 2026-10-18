@@ -52,6 +52,7 @@ _sail_addr_t _sailwrapper_API(representable_mask)(_sail_addr_t len);
 _sail_addr_t _sailwrapper_API(representable_length)(_sail_addr_t len);
 bool _sailwrapper_API(setbounds)(_sail_cap_t* cap, _sailwrapper_cc_N(length_t) req_len);
 _sail_cap_t _sailwrapper_API(reset_capability)(void);
+_sail_addr_t _sailwrapper_API(legalize_arch_perms)(_sail_addr_t perms);
 
 #ifdef __cplusplus
 }
@@ -83,6 +84,7 @@ public:
         return _sailwrapper_API(setbounds)(cap, req_len);
     }
     static inline cap_t sail_reset_capability() { return _sailwrapper_API(reset_capability)(); }
+    static inline addr_t sail_legalize_arch_perms(addr_t perms) { return _sailwrapper_API(legalize_arch_perms)(perms); }
 };
 
 #endif

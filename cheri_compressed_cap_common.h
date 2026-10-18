@@ -134,12 +134,14 @@ static inline uint32_t _cc_N(get_level)(const _cc_cap_t* cap);
 static inline _cc_addr_t _cc_N(get_perms)(const _cc_cap_t* cap);
 static inline _cc_addr_t _cc_N(get_reserved)(const _cc_cap_t* cap);
 static inline bool _cc_N(reserved_bits_valid)(const _cc_cap_t* cap) { return _cc_N(get_reserved)(cap) == 0; }
+static inline bool _cc_N(has_valid_permissions_encoding)(const _cc_cap_t* cap);
 static inline _cc_addr_t _cc_N(get_uperms)(const _cc_cap_t* cap);
 /// Returns the combined permissions in the format specified by GCPERM/CGetPerm.
 static inline _cc_addr_t _cc_N(get_all_permissions)(const _cc_cap_t* cap);
 static inline bool _cc_N(has_permissions)(const _cc_cap_t* cap, _cc_addr_t permissions) {
     return (_cc_N(get_all_permissions)(cap) & permissions) == permissions;
 }
+static inline _cc_addr_t _cc_N(legalize_permissions)(const _cc_cap_t* cap, _cc_addr_t permissions);
 static inline bool _cc_N(set_permissions)(_cc_cap_t* cap, _cc_addr_t permissions);
 #ifndef CC_IS_MORELLO
 static inline _cc_mode _cc_N(get_execution_mode)(const _cc_cap_t* cap);
@@ -183,12 +185,15 @@ struct _cc_N(cap) {
     }
     inline uint32_t software_permissions() const { return _cc_N(get_uperms)(this); }
     inline uint32_t all_permissions() const { return _cc_N(get_all_permissions)(this); }
-    inline uint32_t has_permissions(_cc_addr_t perms) const { return _cc_N(has_permissions)(this, perms); }
+    inline _cc_addr_t legalize_permissions(_cc_addr_t perms) const { return _cc_N(legalize_permissions)(this, perms); }
+    inline bool has_permissions(_cc_addr_t perms) const { return _cc_N(has_permissions)(this, perms); }
+    inline bool has_valid_permissions_encoding() const { return _cc_N(has_valid_permissions_encoding)(this); }
     inline uint32_t permissions() const { return _cc_N(get_perms)(this); }
     inline uint32_t type() const { return _cc_N(get_otype)(this); }
     inline uint32_t level() const { return _cc_N(get_level)(this); }
     inline bool is_sealed() const { return type() != _CC_N(OTYPE_UNSEALED); }
     inline _cc_addr_t reserved_bits() const { return _cc_N(get_reserved)(this); }
+    inline bool reserved_bits_valid() const { return _cc_N(reserved_bits_valid)(this); }
 #ifndef CC_IS_MORELLO
     inline _cc_mode execution_mode() const { return _cc_N(get_execution_mode)(this); }
 #endif
@@ -1127,6 +1132,9 @@ public:
     static inline addr_t representable_mask(addr_t len) { return _cc_N(get_alignment_mask)(len); }
     static inline bool is_representable_with_addr(const cap_t& cap, addr_t new_addr, bool precise_check) {
         return _cc_N(is_representable_with_addr)(&cap, new_addr, precise_check);
+    }
+    static inline addr_t legalize_permissions(const cap_t& cap, addr_t perms) {
+        return _cc_N(legalize_permissions)(&cap, perms);
     }
 };
 #define CompressedCapCC _CC_CONCAT(CompressedCap, CC_FORMAT_LOWER)

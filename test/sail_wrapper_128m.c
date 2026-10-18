@@ -194,3 +194,4 @@ _cc_addr_t sail_null_pesbt_128m(void) {
 }
 
 _cc_addr_t sail_reset_pesbt_128m(void) { return extract_bits(zCMAX, 64, 64); }
+_cc_addr_t _cc_sail(legalize_arch_perms)(_cc_addr_t perms) { return perms & _CC_N(PERMS_MASK); }

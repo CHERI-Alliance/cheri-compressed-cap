@@ -259,9 +259,13 @@ TEST_CASE("set invalid perms", "[perms]") {
     // Setting reserved-zero permissions should be rejected
     CHECK_THROWS_MATCHES(_cc_N(set_permissions)(&max_cap, ~(_cc_addr_t)0), std::invalid_argument,
                          Message("invalid permissions"));
+    CHECK_THROWS_MATCHES(max_cap.legalize_permissions(~(_cc_addr_t)0), std::invalid_argument,
+                         Message("invalid permissions"));
 #endif
     // Should not have modified the permissions
     CHECK((max_cap.all_permissions() & _CC_N(PERMS_MASK)) == _CC_N(PERMS_MASK));
+    CHECK(max_cap.legalize_permissions(max_cap.all_permissions()) == max_cap.all_permissions());
+    CHECK(max_cap.legalize_permissions(0) == 0);
 }
 
 TEST_CASE("test old permissions API", "[perms]") {

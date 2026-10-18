@@ -165,3 +165,35 @@ _cc_cap_t _cc_sail(decode_raw)(_cc_addr_t pesbt, _cc_addr_t cursor, bool tag) {
     return _cc_sail(decode_mem)(pesbt, cursor, tag);
 }
 _cc_addr_t _cc_sail(compress_raw)(const _cc_cap_t* csp) { return _cc_sail(compress_mem)(csp); }
+
+_cc_addr_t _cc_sail(legalize_arch_perms)(_cc_addr_t perms) {
+    struct zArchPerms sail_perms = {
+        .zR = (perms & _CC_N(PERM_READ)) != 0,
+        .zW = (perms & _CC_N(PERM_WRITE)) != 0,
+        .zC = (perms & _CC_N(PERM_CAPABILITY)) != 0,
+        .zLM = (perms & _CC_N(PERM_LOAD_MUTABLE)) != 0,
+        .zEL = (perms & _CC_N(PERM_ELEVATE_LEVEL)) != 0,
+        .zSL = (perms & _CC_N(PERM_STORE_LEVEL)) != 0,
+        .zX = (perms & _CC_N(PERM_EXECUTE)) != 0,
+        .zASR = (perms & _CC_N(PERM_ACCESS_SYS_REGS)) != 0,
+    };
+    struct zArchPerms legalized = sailgen_legalizzePermsAndMode(sail_perms, zCapPtrMode).ztup0;
+    _cc_addr_t result = 0;
+    if (legalized.zR)
+        result |= _CC_N(PERM_READ);
+    if (legalized.zW)
+        result |= _CC_N(PERM_WRITE);
+    if (legalized.zC)
+        result |= _CC_N(PERM_CAPABILITY);
+    if (legalized.zLM)
+        result |= _CC_N(PERM_LOAD_MUTABLE);
+    if (legalized.zEL)
+        result |= _CC_N(PERM_ELEVATE_LEVEL);
+    if (legalized.zSL)
+        result |= _CC_N(PERM_STORE_LEVEL);
+    if (legalized.zX)
+        result |= _CC_N(PERM_EXECUTE);
+    if (legalized.zASR)
+        result |= _CC_N(PERM_ACCESS_SYS_REGS);
+    return result;
+}

@@ -149,10 +149,9 @@ enum _CC_N(OTypes) {
 #include "cheri_compressed_cap_riscv_common.h"
 
 // The 64-bit format uses one bit per permission but we have to move them to the correct offset in the final result.
-static inline _cc_addr_t _cc_N(get_all_permissions)(const _cc_cap_t* cap) {
-    _cc_addr_t sw_perms = _CC_EXTRACT_FIELD(cap->cr_pesbt, SDP);
+static inline _cc_addr_t _cc_N(decode_ap_m)(const _cc_cap_t* cap) {
     _cc_addr_t arch_perms = _CC_EXTRACT_FIELD(cap->cr_pesbt, AP);
-    _cc_addr_t result = sw_perms << _CC_N(UPERMS_SHFT);
+    _cc_addr_t result = 0;
     // See "Encoding of architectural permissions for MXLEN=64" in the spec
     if (arch_perms & _CC_BIT64(0))
         result |= CC128R_PERM_CAPABILITY;
@@ -171,20 +170,19 @@ static inline _cc_addr_t _cc_N(get_all_permissions)(const _cc_cap_t* cap) {
             result |= CC128R_PERM_ELEVATE_LEVEL;
         if (arch_perms & _CC_BIT64(7))
             result |= CC128R_PERM_STORE_LEVEL;
-        if (_CC_EXTRACT_FIELD(cap->cr_pesbt, LEVEL))
-            result |= CC128R_PERM_LEVEL;
-    } else {
-        // Levels extension not supported -> treat as reserved one-bits.
-        result |= CC128R_PERM_LEVEL | CC128R_PERM_STORE_LEVEL | CC128R_PERM_ELEVATE_LEVEL;
+    } else if (arch_perms & (_CC_BIT64(6) | _CC_BIT64(7))) {
+        result = 0; // Levels extension not supported -> SL/EL encodings are reserved.
     }
-    result |= _CC_N(PERMS_RESERVED_ONES); // Finally include the hardcoded one-bits
+    if (_cc_N(legalize_permissions)(cap, result) != result ||
+        (_CC_EXTRACT_FIELD(cap->cr_pesbt, MODE) == _CC_N(MODE_INT) && (result & CC128R_PERM_EXECUTE) == 0)) {
+        result = 0;
+    }
     return result;
 }
 
 static inline bool _cc_N(set_permissions)(_cc_cap_t* cap, _cc_addr_t permissions) {
     _cc_api_requirement((permissions & (_CC_N(PERMS_MASK) | _CC_N(PERMS_RESERVED_ONES))) == permissions,
                         "invalid permissions");
-    // TODO: legalize the remaining permission dependencies or reject invalid requests
     _cc_addr_t sw_perms = (permissions >> _CC_N(UPERMS_SHFT)) & _CC_N(UPERMS_ALL);
     _cc_mode mode = (_cc_mode)_CC_EXTRACT_FIELD(cap->cr_pesbt, MODE);
     // See "Encoding of architectural permissions for MXLEN=64" in the spec
@@ -209,13 +207,16 @@ static inline bool _cc_N(set_permissions)(_cc_cap_t* cap, _cc_addr_t permissions
         unsigned new_level = permissions & CC128R_PERM_LEVEL ? 1 : 0;
         cap->cr_pesbt = _CC_DEPOSIT_FIELD(cap->cr_pesbt, new_level, LEVEL);
     }
+    bool valid = _cc_N(legalize_permissions)(cap, permissions) == permissions;
+    if (!valid)
+        result = 0;
     cap->cr_pesbt = _CC_DEPOSIT_FIELD(cap->cr_pesbt, result, AP);
     cap->cr_pesbt = _CC_DEPOSIT_FIELD(cap->cr_pesbt, sw_perms, SDP);
-    if ((permissions & CC128R_PERM_EXECUTE) == 0 && mode == _CC_N(MODE_INT)) {
+    if ((result & _CC_BIT64(3)) == 0 && mode == _CC_N(MODE_INT)) {
         cap->cr_pesbt = _CC_DEPOSIT_FIELD(cap->cr_pesbt, (unsigned)_CC_N(MODE_CAP), MODE);
         return false;
     }
-    return true;
+    return valid;
 }
 
 static inline _cc_mode _cc_N(get_execution_mode)(const _cc_cap_t* cap) {

@@ -186,6 +186,10 @@ enum _CC_N(OTypes) {
 static inline _cc_addr_t _cc_N(get_all_permissions)(const _cc_cap_t* cap) {
     return (_cc_addr_t)_CC_EXTRACT_FIELD(cap->cr_pesbt, ALL_PERMS);
 }
+static inline _cc_addr_t _cc_N(legalize_permissions)(_cc_maybe_unused const _cc_cap_t* cap, _cc_addr_t permissions) {
+    _cc_api_requirement((permissions & _CC_N(PERMS_MASK)) == permissions, "invalid permissions");
+    return permissions;
+}
 static inline bool _cc_N(set_permissions)(_cc_cap_t* cap, _cc_addr_t permissions) {
     _cc_api_requirement((permissions & _CC_N(PERMS_MASK)) == permissions, "invalid permissions");
     cap->cr_pesbt = _CC_DEPOSIT_FIELD(cap->cr_pesbt, permissions, ALL_PERMS);
@@ -193,6 +197,7 @@ static inline bool _cc_N(set_permissions)(_cc_cap_t* cap, _cc_addr_t permissions
 }
 
 static inline _cc_addr_t cc128m_get_reserved(_cc_maybe_unused const cc128m_cap_t* cap) { return 0; }
+static inline bool _cc_N(has_valid_permissions_encoding)(_cc_maybe_unused const _cc_cap_t* cap) { return true; }
 
 static inline bool _cc_N(compute_base_top_special_cases)(_cc_bounds_bits bounds, _cc_addr_t* base_out,
                                                          _cc_length_t* top_out, bool* valid) {

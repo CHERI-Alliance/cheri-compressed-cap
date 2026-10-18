@@ -36,6 +36,7 @@
  */
 
 // Legacy 64-bit CHERI compressed capability format for the RISC-V standard v0.9.3-v0.9.8
+#define CC_IS_RVY093
 
 // The following macros are expected to be defined
 #define CC_FORMAT_LOWER 64r093
@@ -177,7 +178,7 @@ static inline bool _cc_N(set_execution_mode)(_cc_cap_t* cap, _cc_mode new_mode) 
     return false;
 }
 
-static inline _cc_addr_t _cc_N(get_all_permissions)(const _cc_cap_t* cap) {
+static inline _cc_addr_t _cc_N(decode_ap_m)(const _cc_cap_t* cap) {
     _cc_addr_t raw_perms = _CC_EXTRACT_FIELD(cap->cr_pesbt, AP_M);
     _cc_addr_t res = 0;
 
@@ -283,15 +284,6 @@ static inline _cc_addr_t _cc_N(get_all_permissions)(const _cc_cap_t* cap) {
         break;
     }
 
-    if (level_bits > 0) {
-        if (_CC_EXTRACT_FIELD(cap->cr_pesbt, LEVEL))
-            res |= CC64R093_PERM_LEVEL;
-    } else {
-        // Levels extension not supported -> treat as reserved one-bits.
-        res |= CC64R093_PERM_ELEVATE_LEVEL | CC64R093_PERM_STORE_LEVEL | CC64R093_PERM_LEVEL;
-    }
-    res |= _CC_EXTRACT_FIELD(cap->cr_pesbt, SDP) << _CC_N(UPERMS_SHFT); // Add the software permissions
-    res |= _CC_N(PERMS_RESERVED_ONES);                                  // Finally include the hardcoded one-bits
     return res;
 }
 
@@ -300,10 +292,8 @@ static inline bool _cc_N(set_permissions)(_cc_cap_t* cap, _cc_addr_t permissions
                         "invalid permissions");
     uint8_t res = 0;
     unsigned level_bits = cap->cr_lvbits;
-    _cc_api_requirement(level_bits <= _CC_N(MAX_LEVEL_BITS), "Invalid number of level bits");
-    bool valid = true;
+    bool valid = _cc_N(legalize_permissions)(cap, permissions) == permissions;
     _cc_addr_t sw_perms = (permissions >> _CC_N(UPERMS_SHFT)) & _CC_N(UPERMS_ALL);
-    // TODO: legalize
     const _cc_addr_t maybe_el = level_bits > 0 ? CC64R093_PERM_ELEVATE_LEVEL : 0;
     const _cc_addr_t maybe_sl = level_bits > 0 ? CC64R093_PERM_STORE_LEVEL : 0;
     if (level_bits == 0) {
@@ -382,5 +372,6 @@ static inline bool _cc_N(set_permissions)(_cc_cap_t* cap, _cc_addr_t permissions
     return valid;
 }
 
+#undef CC_IS_RVY093
 #undef CC_FORMAT_LOWER
 #undef CC_FORMAT_UPPER

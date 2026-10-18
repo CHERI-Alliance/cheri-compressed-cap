@@ -118,3 +118,4 @@ bool _cc_sail(fast_is_representable)(const _cc_cap_t* cap, _cc_addr_t new_addr) 
 
 _cc_addr_t _cc_sail(compress_raw)(const _cc_cap_t* csp) { return sail_compress_common_raw(csp); }
 _cc_addr_t _cc_sail(compress_mem)(const _cc_cap_t* csp) { return sail_compress_common_mem(csp); }
+_cc_addr_t _cc_sail(legalize_arch_perms)(_cc_addr_t perms) { return perms & _CC_N(PERMS_ALL); }
